@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/tesseract.js@v2.0.2/dist/tesseract.min.js"></script>
+    <style>
+      body {
+        zoom: 5;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Hello, world!!!</p>
+    <script>
+      const update = text => {
+        document.querySelector("p").innerHTML = JSON.stringify(text);
+      };
+      Tesseract.recognize(
+        "https://tesseract.projectnaptha.com/img/eng_bw.png",
+        "eng",
+        { logger: m => update(m) }
+      )
+        .then(({ data: { text } }) => update(text))
+        .catch(error => update(error));
+    </script>
+  </body>
+</html>

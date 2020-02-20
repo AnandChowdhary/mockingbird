@@ -1,13 +1,16 @@
 import React from "react";
+import { View } from "react-native";
 import { WebView } from "react-native-webview";
-import { html } from "../helpers/web-ocr";
 
 export default () => {
   return (
-    <WebView
-      originWhitelist={["*"]}
-      source={{ html }}
-      style={{ marginTop: 20 }}
-    />
+    <View>
+      <WebView
+        originWhitelist={["*"]}
+        source={{ uri: "http://127.0.0.1:5500/test-ocr.html" }}
+        style={{ marginTop: 20 }}
+        scrollEnabled={true}
+      />
+    </View>
   );
 };
