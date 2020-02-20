@@ -1,13 +1,15 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "api": "now dev",
+    "start-app": "expo start",
+    "android-app": "expo start --android",
+    "ios-app": "expo start --ios",
+    "web-app": "expo start --web",
+    "eject-app": "expo eject"
   },
   "dependencies": {
+    "@now/node": "^1.4.1",
     "expo": "~36.0.0",
     "expo-camera": "~8.0.0",
     "react": "~16.9.0",
@@ -17,9 +19,10 @@
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@types/node": "^13.7.4",
     "@types/react": "~16.9.0",
     "@types/react-native": "~0.60.23",
-    "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
     "typescript": "~3.6.3"
   },
