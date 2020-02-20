@@ -2,6 +2,7 @@ import React, { useState, useEffect, createRef } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
+import OCRWebview from "../components/OCRWebview";
 // import { recognizeTextFromImage } from "../helpers/ocr";
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
       >
         <Text style={{ fontSize: 20, padding: 15 }}>BigRead</Text>
       </View>
+      <OCRWebview />
       <Camera ref={ref => (camera = ref)} style={{ flex: 1 }} type={type} />
       <View style={cam.nav}>
         <TouchableOpacity
