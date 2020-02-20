@@ -4,10 +4,12 @@ import { WebView } from "react-native-webview";
 
 export default () => {
   return (
-    <View>
+    <View style={{ height: 250 }}>
       <WebView
         originWhitelist={["*"]}
-        source={{ uri: "http://127.0.0.1:5500/test-ocr.html" }}
+        source={{
+          uri: "https://anandchowdhary.github.io/bigread/webview.html"
+        }}
         style={{ marginTop: 20 }}
         scrollEnabled={true}
       />
