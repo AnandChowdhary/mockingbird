@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
-import OCRWebview from "../components/OCRWebview";
+import { ocrApi } from "../helpers/ocr";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [recognizeUrl, setRecognizeUrl] = useState<string>();
 
   useEffect(() => {
     (async () => {
@@ -21,7 +20,9 @@ export default function App() {
   const takeImageAndOcr = async () => {
     if (!camera) return;
     const image = await camera.takePictureAsync({ base64: true, quality: 0.5 });
-    setRecognizeUrl(image.base64);
+    console.log("Took a picture!");
+    const result = await ocrApi(`data:image/png;base64,${image.base64}`);
+    console.log("Result from OCR", result);
   };
 
   if (hasPermission === null) {
@@ -42,7 +43,6 @@ export default function App() {
       >
         <Text style={{ fontSize: 20, padding: 15 }}>BigRead</Text>
       </View>
-      <OCRWebview recognizeUrl={recognizeUrl} />
       <Camera ref={ref => (camera = ref)} style={{ flex: 1 }} type={type} />
       <View style={cam.nav}>
         <TouchableOpacity
