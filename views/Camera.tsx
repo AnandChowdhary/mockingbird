@@ -93,7 +93,7 @@ const cam = StyleSheet.create({
   icon: {
     textAlign: "center",
     marginTop: 5,
-    fontSize: 40,
+    fontSize: 35,
     color: "#aaa"
   },
   label: {
