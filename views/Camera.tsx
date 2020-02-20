@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { RNCamera } from "react-native-camera";
 
 export default function App() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(RNCamera.Constants.Type.back);
+
+  let camera: RNCamera | undefined = undefined;
 
   const takeImageAndOcr = async () => {
+    if (!camera) return;
     alert("Photo!");
   };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -27,8 +24,18 @@ export default function App() {
       >
         <Text style={{ fontSize: 20, padding: 15 }}>BigRead</Text>
       </View>
+      <RNCamera ref={ref => (camera = ref)} style={{ flex: 1 }} type={type} />
       <View style={cam.nav}>
-        <TouchableOpacity style={cam.button} onPress={() => {}}>
+        <TouchableOpacity
+          style={cam.button}
+          onPress={() => {
+            setType(
+              type === RNCamera.Constants.Type.back
+                ? RNCamera.Constants.Type.front
+                : RNCamera.Constants.Type.back
+            );
+          }}
+        >
           <View>
             <Ionicons style={cam.icon} name="ios-reverse-camera" />
             <Text style={cam.label}>Flip</Text>
