@@ -12,19 +12,19 @@
     "postinstall": "jetify"
   },
   "dependencies": {
+    "@now/node": "^1.4.1",
     "expo": "~36.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "~0.61.4",
+    "react-native-camera": "^3.18.0",
     "react-native-gesture-handler": "~1.5.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-unimodules": "~0.7.0",
     "react-native-web": "~0.11.7",
-    "@now/node": "^1.4.1",
-    "expo-camera": "~8.0.0",
-    "tesseract.js": "^2.0.2",
-    "react-native-webview": "7.4.3"
+    "react-native-webview": "7.4.3",
+    "tesseract.js": "^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

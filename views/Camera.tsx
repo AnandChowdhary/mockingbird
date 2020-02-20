@@ -1,28 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
-import { ocrApi } from "../helpers/ocr";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  let camera: Camera | undefined = undefined;
 
   const takeImageAndOcr = async () => {
-    if (!camera) return;
-    const image = await camera.takePictureAsync({ base64: true, quality: 0.5 });
-    console.log("Took a picture!");
-    const result = await ocrApi(`data:image/png;base64,${image.base64}`);
-    console.log("Result from OCR", result);
+    alert("Photo!");
   };
 
   if (hasPermission === null) {
@@ -43,18 +27,8 @@ export default function App() {
       >
         <Text style={{ fontSize: 20, padding: 15 }}>BigRead</Text>
       </View>
-      <Camera ref={ref => (camera = ref)} style={{ flex: 1 }} type={type} />
       <View style={cam.nav}>
-        <TouchableOpacity
-          style={cam.button}
-          onPress={() => {
-            setType(
-              type === Camera.Constants.Type.back
-                ? Camera.Constants.Type.front
-                : Camera.Constants.Type.back
-            );
-          }}
-        >
+        <TouchableOpacity style={cam.button} onPress={() => {}}>
           <View>
             <Ionicons style={cam.icon} name="ios-reverse-camera" />
             <Text style={cam.label}>Flip</Text>
