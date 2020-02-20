@@ -1,10 +1,16 @@
-import { recognize } from "tesseract.js";
+import { createWorker } from "tesseract.js";
+
+const worker = createWorker();
 
 export const ocrImage = async () => {
-  const result = await recognize(
-    "https://tesseract.projectnaptha.com/img/eng_bw.png",
-    "eng",
-    { logger: m => console.log(m) }
+  await worker.load();
+  await worker.loadLanguage("eng");
+  await worker.initialize("eng");
+  const {
+    data: { text }
+  } = await worker.recognize(
+    "https://tesseract.projectnaptha.com/img/eng_bw.png"
   );
-  return result;
+  console.log(text);
+  await worker.terminate();
 };
