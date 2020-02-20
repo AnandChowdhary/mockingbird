@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
+// import { recognizeTextFromImage } from "../helpers/ocr";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -14,12 +15,23 @@ export default function App() {
     })();
   }, []);
 
+  let camera: Camera | undefined = undefined;
+
+  const takeImageAndOcr = async () => {
+    if (!camera) return;
+    const image = await camera.takePictureAsync();
+    console.log("Took photo", image.uri);
+    // const result = await recognizeTextFromImage(image.base64);
+    // console.log("RESULT", result);
+  };
+
   if (hasPermission === null) {
     return <View />;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
   return (
     <View style={{ flex: 1 }}>
       <View
@@ -31,7 +43,7 @@ export default function App() {
       >
         <Text style={{ fontSize: 20, padding: 15 }}>BigRead</Text>
       </View>
-      <Camera style={{ flex: 1 }} type={type} />
+      <Camera ref={ref => (camera = ref)} style={{ flex: 1 }} type={type} />
       <View style={cam.nav}>
         <TouchableOpacity
           style={cam.button}
@@ -48,7 +60,7 @@ export default function App() {
             <Text style={cam.label}>Flip</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={cam.button} onPress={() => {}}>
+        <TouchableOpacity style={cam.button} onPress={() => takeImageAndOcr()}>
           <View>
             <Ionicons style={cam.icon} name="ios-pause" />
             <Text style={cam.label}>Pause</Text>
