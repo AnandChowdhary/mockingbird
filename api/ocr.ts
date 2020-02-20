@@ -1,5 +1,6 @@
 import { NowRequest, NowResponse } from "@now/node";
+import { ocrImage } from "../helpers/ocr";
 
 export default async (req: NowRequest, res: NowResponse) => {
-  return res.json({ ok: true });
+  return res.json(ocrImage());
 };
