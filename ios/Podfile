@@ -41,13 +41,3 @@ target 'Mockingbird' do
 
   use_native_modules!
 end
-
-target 'Mockingbird-tvOS' do
-  # Pods for Mockingbird-tvOS
-
-  target 'Mockingbird-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end

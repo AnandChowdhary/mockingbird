@@ -1,6 +1,7 @@
 {
   "name": "mockingbird",
   "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -10,7 +11,8 @@
   },
   "dependencies": {
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-native": "0.61.5",
+    "react-native-camera": "^3.19.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
