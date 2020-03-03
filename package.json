@@ -1,43 +1,43 @@
 {
+  "name": "Mockingbird",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "api": "now dev",
-    "start-app": "expo start",
-    "android-app": "expo start --android",
-    "ios-app": "expo start --ios",
-    "web-app": "expo start --web",
-    "eject-app": "expo eject",
-    "start": "react-native start",
-    "ios": "react-native run-ios",
     "android": "react-native run-android",
-    "postinstall": "jetify"
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
-    "@now/node": "^1.4.1",
-    "expo": "~36.0.0",
-    "react": "~16.9.0",
-    "react-dom": "~16.9.0",
-    "react-native": "~0.61.4",
-    "react-native-camera": "^3.18.0",
-    "react-native-gesture-handler": "~1.5.0",
-    "react-native-reanimated": "~1.4.0",
-    "react-native-screens": "2.0.0-alpha.12",
-    "react-native-unimodules": "~0.7.0",
-    "react-native-web": "~0.11.7",
-    "react-native-webview": "7.4.3",
-    "tesseract.js": "^2.0.2"
+    "react": "16.9.0",
+    "react-native": "0.61.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "babel-jest": "~24.9.0",
-    "jest": "~24.9.0",
-    "jetifier": "~1.6.4",
-    "metro-react-native-babel-preset": "~0.56.0",
-    "react-test-renderer": "~16.9.0",
-    "@types/node": "^13.7.4",
-    "@types/react": "~16.9.0",
-    "@types/react-native": "~0.60.23",
-    "babel-preset-expo": "~8.0.0",
-    "typescript": "~3.6.3"
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "@types/jest": "^24.0.24",
+    "@types/react-native": "^0.60.25",
+    "@types/react-test-renderer": "16.9.1",
+    "@typescript-eslint/eslint-plugin": "^2.12.0",
+    "@typescript-eslint/parser": "^2.12.0",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.5.1",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "react-test-renderer": "16.9.0",
+    "typescript": "^3.7.3"
   },
-  "private": true
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
 }
