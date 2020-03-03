@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		379ECFB87473337E556A65E6 /* libPods-MockingbirdTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D2FFDF61E3044AFFFC76E7 /* libPods-MockingbirdTests.a */; };
+		E9FD4681240E91AF00FFFE6D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9FD4680240E91AF00FFFE6D /* GoogleService-Info.plist */; };
 		FE82034EEBE4AD023DF50E51 /* libPods-Mockingbird.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1C009D7FED22569CF67BC5 /* libPods-Mockingbird.a */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		CDAFB276F2ECE4CD7CF3E648 /* Pods-MockingbirdTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MockingbirdTests.debug.xcconfig"; path = "Target Support Files/Pods-MockingbirdTests/Pods-MockingbirdTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D44A87DDF42EE5848F520A2B /* Pods-Mockingbird-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mockingbird-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Mockingbird-tvOSTests/Pods-Mockingbird-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6E0F3E15C73D465E14AC148 /* Pods-Mockingbird-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mockingbird-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Mockingbird-tvOS/Pods-Mockingbird-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E9FD4680240E91AF00FFFE6D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -109,6 +111,7 @@
 		13B07FAE1A68108700A75B9A /* Mockingbird */ = {
 			isa = PBXGroup;
 			children = (
+				E9FD4680240E91AF00FFFE6D /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -260,6 +263,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				E9FD4681240E91AF00FFFE6D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
