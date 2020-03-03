@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCamera} from '@fortawesome/free-solid-svg-icons';
 
 const PendingView = () => (
   <View
@@ -42,11 +44,14 @@ export default () => {
         {({camera, status, recordAudioPermissionStatus}) => {
           if (status !== 'READY') return <PendingView />;
           return (
-            <View style={styles.container}>
+            <View style={styles.insideContainer}>
               <TouchableOpacity
                 onPress={() => takePicture(camera)}
                 style={styles.capture}>
-                <Text style={{fontSize: 14}}> SNAP </Text>
+                <View style={styles.captureBtn}>
+                  <FontAwesomeIcon size={25} icon={faCamera} />
+                  <Text style={styles.captureText}>Click photo</Text>
+                </View>
               </TouchableOpacity>
             </View>
           );
@@ -61,6 +66,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  insideContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -74,5 +84,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignSelf: 'center',
     margin: 20,
+  },
+  captureBtn: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  captureText: {
+    marginLeft: 15,
+    fontSize: 20,
   },
 });

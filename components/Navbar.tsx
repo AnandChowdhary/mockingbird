@@ -35,7 +35,7 @@ export default ({active}: {active: string}) => {
           <View style={styles.itemContainer}>
             <FontAwesomeIcon
               size={25}
-              color={active === i.label ? 'blue' : undefined}
+              color={active === i.label ? '#347b9a' : undefined}
               icon={i.icon}
             />
             <Text
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   activeText: {
     fontWeight: 'bold',
-    color: 'blue',
+    color: '#347b9a',
   },
   text: {
     marginTop: 5,
