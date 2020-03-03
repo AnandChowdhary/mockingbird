@@ -22,7 +22,7 @@ export default () => {
     console.log(data.uri);
   };
   return (
-    <>
+    <View style={styles.container}>
       <RNCamera
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
@@ -52,28 +52,27 @@ export default () => {
           );
         }}
       </RNCamera>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    //   flex: 1,
-    //   flexDirection: 'column',
-    //   backgroundColor: 'black',
+    flex: 1,
+    flexDirection: 'column',
   },
   preview: {
-    //   flex: 1,
-    //   justifyContent: 'flex-end',
-    //   alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   capture: {
-    //   flex: 0,
-    //   backgroundColor: '#fff',
-    //   borderRadius: 5,
-    //   padding: 15,
-    //   paddingHorizontal: 20,
-    //   alignSelf: 'center',
-    //   margin: 20,
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20,
   },
 });
