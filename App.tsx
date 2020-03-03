@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  StatusBar,
-  View,
-  TouchableHighlight,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, StatusBar, View} from 'react-native';
+import Navbar from './components/Navbar';
 import Camera from './components/Camera';
 
 declare var global: {HermesInternal: null | {}};
@@ -23,20 +17,7 @@ const App = () => {
           <View style={styles.camera}>
             <Camera />
           </View>
-          <View style={styles.navbar}>
-            <TouchableHighlight style={styles.item}>
-              <Text style={styles.activeText}>Live</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.item}>
-              <Text>Photo</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.item}>
-              <Text>Subtitles</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={styles.item}>
-              <Text>Settings</Text>
-            </TouchableHighlight>
-          </View>
+          <Navbar active="Photo" />
         </View>
       </SafeAreaView>
     </>
@@ -60,21 +41,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     padding: 15,
-  },
-  navbar: {
-    backgroundColor: '#fff',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  item: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingTop: 20,
-  },
-  activeText: {
-    fontWeight: 'bold',
   },
 });
 
