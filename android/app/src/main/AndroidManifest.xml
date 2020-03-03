@@ -25,6 +25,7 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+      <meta-data android:name="com.google.firebase.ml.vision.DEPENDENCIES" android:value="ocr, face" />
     </application>
 
 </manifest>
