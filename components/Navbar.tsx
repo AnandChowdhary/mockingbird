@@ -27,11 +27,14 @@ const items = [
   },
 ];
 
-export default ({active}: {active: string}) => {
+export default ({active, setActive}: {active: string; setActive: any}) => {
   return (
     <View style={styles.navbar}>
       {items.map(i => (
-        <TouchableHighlight style={styles.item} key={`navbarItem_${i.label}`}>
+        <TouchableHighlight
+          onPress={() => setActive(i.label)}
+          style={styles.item}
+          key={`navbarItem_${i.label}`}>
           <View style={styles.itemContainer}>
             <FontAwesomeIcon
               size={25}

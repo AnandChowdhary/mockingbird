@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -57,7 +57,12 @@ const PendingView = () => (
   </View>
 );
 
-export default () => {
+export default ({live = false}: {live: boolean}) => {
+  let interval: any;
+  let mainCamera: any;
+  useEffect(() => {
+    clearInterval(interval);
+  }, []);
   const takePicture = async (camera: RNCamera) => {
     const data = await camera.takePictureAsync({
       quality: 0.5,
@@ -87,6 +92,15 @@ export default () => {
         .catch(() => {});
     }, 10000);
   };
+  if (live) {
+    interval = setInterval(() => {
+      console.log('Clicking!');
+      if (mainCamera)
+        takePicture(mainCamera)
+          .then(() => {})
+          .catch(() => {});
+    }, 10000);
+  }
   return (
     <View style={styles.container}>
       <RNCamera
@@ -106,6 +120,7 @@ export default () => {
           buttonNegative: 'Cancel',
         }}>
         {({camera, status, recordAudioPermissionStatus}) => {
+          mainCamera = camera;
           if (status !== 'READY') return <PendingView />;
           return (
             <View style={styles.insideContainer}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, StatusBar, View} from 'react-native';
 import Navbar from './components/Navbar';
 import Camera from './components/Camera';
@@ -6,6 +6,7 @@ import Camera from './components/Camera';
 declare var global: {HermesInternal: null | {}};
 
 const App = () => {
+  const [active, setActive] = useState('Photo');
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -15,9 +16,9 @@ const App = () => {
             <Text style={styles.title}>Mockingbird</Text>
           </View>
           <View style={styles.camera}>
-            <Camera />
+            <Camera live={active === 'Live'} />
           </View>
-          <Navbar active="Photo" />
+          <Navbar active={active} setActive={setActive} />
         </View>
       </SafeAreaView>
     </>
