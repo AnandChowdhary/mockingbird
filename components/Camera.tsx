@@ -78,6 +78,14 @@ export default () => {
       .database()
       .ref()
       .update({image: url});
+    setTimeout(() => {
+      firebase
+        .storage()
+        .ref(ref.name)
+        .delete()
+        .then(() => {})
+        .catch(() => {});
+    }, 10000);
   };
   return (
     <View style={styles.container}>
