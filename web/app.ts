@@ -21,6 +21,12 @@ firebase.initializeApp({
 // const store = storage();
 const db = firebase.database();
 
-db.ref('image').on('value', value => {
-  console.log(value.val());
+db.ref('image').on('value', snapshot => {
+  const value = snapshot.val();
+  const loader = new Image();
+  loader.src = value;
+  loader.addEventListener('load', () => {
+    const img = document.querySelector<HTMLDivElement>('.image');
+    if (img) img.style.backgroundImage = `url(${value})`;
+  });
 });

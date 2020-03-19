@@ -16,5 +16,19 @@ body {
   font-size: 175%;
   background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
+  backdrop-filter: blur(1rem);
   border: none;
+  z-index: 10;
+}
+
+.image {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
