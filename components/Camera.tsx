@@ -107,6 +107,7 @@ export default ({live = false}: {live: boolean}) => {
       <RNCamera
         style={styles.preview}
         type={RNCamera.Constants.Type.back}
+        captureAudio={false}
         flashMode={RNCamera.Constants.FlashMode.on}
         androidCameraPermissionOptions={{
           title: 'Permission to use camera',
