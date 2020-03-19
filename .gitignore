@@ -69,3 +69,4 @@ GoogleService-Info.plist
 
 # Web
 .cache/
+dist/
