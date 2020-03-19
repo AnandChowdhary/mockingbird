@@ -66,3 +66,6 @@ buck-out/
 # Google API keys
 google-services.json
 GoogleService-Info.plist
+
+# Web
+.cache/
