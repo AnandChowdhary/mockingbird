@@ -57,13 +57,20 @@ const PendingView = () => (
   </View>
 );
 
+const storage = firebase.storage();
+const database = firebase.database();
+
 export default ({live = false}: {live: boolean}) => {
   let interval: any;
   let mainCamera: any;
   useEffect(() => {
-    clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, []);
+
   const takePicture = async (camera: RNCamera) => {
+    console.log('Clicking!');
     const data = await camera.takePictureAsync({
       quality: 0.5,
       base64: true,
@@ -72,20 +79,15 @@ export default ({live = false}: {live: boolean}) => {
     if (!data.base64) return;
     const blob = await urlToBlob(data.uri);
     const ref = (
-      await firebase
-        .storage()
+      await storage
         .ref(new Date().toISOString() + '.jpg')
         .put(blob, {contentType: 'image/jpeg'})
     ).ref;
     const url = await ref.getDownloadURL();
     if (!url) return console.log('No download URL');
-    await firebase
-      .database()
-      .ref()
-      .update({image: url});
+    await database.ref().update({image: url});
     setTimeout(() => {
-      firebase
-        .storage()
+      storage
         .ref(ref.name)
         .delete()
         .then(() => {})
@@ -94,12 +96,11 @@ export default ({live = false}: {live: boolean}) => {
   };
   if (live) {
     interval = setInterval(() => {
-      console.log('Clicking!');
       if (mainCamera)
         takePicture(mainCamera)
           .then(() => {})
           .catch(() => {});
-    }, 10000);
+    }, 2500);
   }
   return (
     <View style={styles.container}>

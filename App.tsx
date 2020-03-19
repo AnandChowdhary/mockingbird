@@ -16,7 +16,10 @@ const App = () => {
             <Text style={styles.title}>Mockingbird</Text>
           </View>
           <View style={styles.camera}>
-            <Camera live={active === 'Live'} />
+            {active === 'Settings' ? <Text>Settings</Text> : <></>}
+            {active === 'Subtitles' ? <Text>Subtitles</Text> : <></>}
+            {active === 'Photo' ? <Camera live={false} /> : <></>}
+            {active === 'Live' ? <Camera live={true} /> : <></>}
           </View>
           <Navbar active={active} setActive={setActive} />
         </View>
