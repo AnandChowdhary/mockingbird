@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "start-web": "parcel web/index.html",
+    "build-web": "parcel build web/index.html"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
@@ -31,6 +33,7 @@
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
+    "parcel": "^1.12.4",
     "react-test-renderer": "16.9.0",
     "typescript": "^3.7.3"
   },
