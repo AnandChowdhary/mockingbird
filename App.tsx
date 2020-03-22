@@ -438,9 +438,9 @@ const SettingsPageHome = ({
             to: "quality"
           },
           {
-            icon: "language",
-            type: "entypo",
-            label: "Language",
+            icon: "touch-app",
+            type: "material",
+            label: "Interface",
             to: "language"
           },
           {
@@ -705,7 +705,7 @@ const SettingsPageLanguage = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Language</Text>
+        <Text style={styles.headerText}>Interface</Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
