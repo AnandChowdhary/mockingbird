@@ -13,6 +13,17 @@ import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/storage";
 
+interface CameraParams {
+  flashMode: any;
+  setFlashMode: React.Dispatch<any>;
+  autofocus: any;
+  setAutofocus: React.Dispatch<any>;
+  zoom: number;
+  setZoom: React.Dispatch<number>;
+  focusDepth: number;
+  setFocusDepth: React.Dispatch<number>;
+}
+
 /**
  * This is the public web API key (you can see this)
  * This is NOT the Firebase admin API key
@@ -35,13 +46,40 @@ const database = firebase.database();
 
 export default function App() {
   const [active, setActive] = useState("photo");
+
+  /**
+   * Global app settings
+   */
+  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.auto); // auto, on, off, torch
+  const [autofocus, setAutofocus] = useState(Camera.Constants.AutoFocus.on); // on, off
+  const [zoom, setZoom] = useState(0); // 0 to 1
+  const [focusDepth, setFocusDepth] = useState(0); // 0 (farthest) to 1 (closest)
+  const cameraParams = {
+    flashMode,
+    setFlashMode,
+    autofocus,
+    setAutofocus,
+    zoom,
+    setZoom,
+    focusDepth,
+    setFocusDepth
+  };
+
   return (
     <SafeAreaView style={styles.parent}>
       <View style={styles.container}>
-        {active === "live" ? <CameraPage /> : <></>}
-        {active === "photo" ? <CameraPage /> : <></>}
+        {active === "live" ? <CameraPage cameraParams={cameraParams} /> : <></>}
+        {active === "photo" ? (
+          <CameraPage cameraParams={cameraParams} />
+        ) : (
+          <></>
+        )}
         {active === "subtitles" ? <Text>subtitles</Text> : <></>}
-        {active === "settings" ? <Text>settings</Text> : <></>}
+        {active === "settings" ? (
+          <SettingsPage cameraParams={cameraParams} />
+        ) : (
+          <></>
+        )}
       </View>
       <View style={styles.nav}>
         <TouchableOpacity
@@ -223,7 +261,38 @@ export const uploadAsFile = async (
   }, 10000);
 };
 
-const CameraPage = () => {
+const SettingsPageHome = ({
+  setActive
+}: {
+  setActive: React.Dispatch<string>;
+}) => {
+  return (
+    <View>
+      <Text>This is the new settings page</Text>
+    </View>
+  );
+};
+
+const SettingsPageZoom = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
+  const [active, setActive] = useState("home");
+  if (active === "home") return <SettingsPageHome setActive={setActive} />;
+  if (active === "security")
+    return (
+      <SettingsPageZoom cameraParams={cameraParams} setActive={setActive} />
+    );
+};
+
+const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState<Camera>(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -238,7 +307,6 @@ const CameraPage = () => {
     const image = await camera.takePictureAsync({
       quality: 0.1
     });
-    console.log(image);
     await uploadAsFile(image.uri);
   };
 
@@ -251,6 +319,7 @@ const CameraPage = () => {
   return (
     <View style={styles.cameraPage}>
       <Camera
+        useCamera2Api={true}
         ref={ref => setCamera(ref)}
         style={styles.cameraInner}
         type={type}
