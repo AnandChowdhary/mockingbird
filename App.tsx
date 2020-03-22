@@ -41,6 +41,8 @@ interface CameraParams {
   setScreenOn: React.Dispatch<string>;
   type: string;
   setType: React.Dispatch<string>;
+  i18n: LocalesType;
+  setI18n: React.Dispatch<LocalesType>;
 }
 
 /**
@@ -78,6 +80,7 @@ export default function App() {
   const [screenOn, setScreenOn] = useState("camera");
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [quality, setQuality] = useState(0.5);
+  const [i18n, setI18n] = useState(locales.en);
   const cameraParams = {
     active,
     setActive,
@@ -98,7 +101,9 @@ export default function App() {
     screenOn,
     setScreenOn,
     type,
-    setType
+    setType,
+    i18n,
+    setI18n
   };
 
   useEffect(() => {
@@ -157,7 +162,7 @@ export default function App() {
                 ...(active === "live" ? styles.navItemActiveText : {})
               }}
             >
-              Live
+              {i18n.live.title}
             </Text>
           </View>
         </TouchableOpacity>
@@ -179,7 +184,7 @@ export default function App() {
                 ...(active === "photo" ? styles.navItemActiveText : {})
               }}
             >
-              Photo
+              {i18n.photo.title}
             </Text>
           </View>
         </TouchableOpacity>
@@ -201,7 +206,7 @@ export default function App() {
                 ...(active === "subtitles" ? styles.navItemActiveText : {})
               }}
             >
-              Subtitles
+              {i18n.subtitles.title}
             </Text>
           </View>
         </TouchableOpacity>
@@ -249,7 +254,7 @@ export default function App() {
                   : {})
               }}
             >
-              Settings
+              {i18n.settings.title}
             </Text>
           </View>
         </TouchableOpacity>
@@ -424,53 +429,57 @@ export const uploadAsFile = async (endpoint: string, uri: string) => {
 };
 
 const SettingsPageHome = ({
-  setActive
+  setActive,
+  cameraParams
 }: {
   setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
 }) => {
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Settings</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.title}
+        </Text>
       </View>
       <ScrollView>
         {[
           {
             icon: "md-lock",
             type: "ionicons",
-            label: "Web app",
+            label: cameraParams.i18n.settings.webApp.title,
             to: "webapp"
           },
           { icon: "zoom-in", type: "feather", label: "Zoom", to: "zoom" },
           {
             icon: "center-focus-strong",
             type: "material",
-            label: "Focus",
+            label: cameraParams.i18n.settings.focus.title,
             to: "focus"
           },
           { icon: "flashlight", type: "entypo", label: "Flash", to: "flash" },
           {
             icon: "subtitles",
             type: "material",
-            label: "Subtitles",
+            label: cameraParams.i18n.settings.subtitles.title,
             to: "subtitles"
           },
           {
             icon: "high-quality",
             type: "material",
-            label: "Quality",
+            label: cameraParams.i18n.settings.quality.title,
             to: "quality"
           },
           {
             icon: "touch-app",
             type: "material",
-            label: "Interface",
+            label: cameraParams.i18n.settings.interface.title,
             to: "language"
           },
           {
             icon: "info-with-circle",
             type: "entypo",
-            label: "About",
+            label: cameraParams.i18n.settings.about.title,
             url:
               "https://github.com/AnandChowdhary/mockingbird/blob/master/README.md"
           }
@@ -527,11 +536,15 @@ const SettingsPageWebapp = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Web app</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.webApp.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Link endpoint</Text>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.webApp.linkEndpoint}
+          </Text>
           <TextInput
             style={styles.input}
             onChangeText={text => cameraParams.setEndpoint(text)}
@@ -539,15 +552,13 @@ const SettingsPageWebapp = ({
           />
         </View>
         <Text style={{ marginTop: 25, fontSize: 18 }}>
-          It's a good idea to choose a long and unique endpoint that's not
-          easily guessable.
+          {cameraParams.i18n.settings.webApp.guessable}
         </Text>
         <Text style={{ marginTop: 25, fontSize: 18 }}>
-          To use the web app, go to{" "}
-          <Text style={{ fontWeight: "bold" }}>
-            https://mockingbird.netlify.com/{cameraParams.endpoint}
-          </Text>{" "}
-          from your desktop web browser.
+          {cameraParams.i18n.settings.webApp.linkDetails.replace(
+            "$LINK",
+            `https://mockingbird.netlify.com/${cameraParams.endpoint}`
+          )}
         </Text>
       </ScrollView>
     </View>
@@ -564,7 +575,9 @@ const SettingsPageFlash = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Flash</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.flash.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <TouchableOpacity
@@ -583,7 +596,7 @@ const SettingsPageFlash = ({
                 : {})
             }}
           >
-            Auto (based on lighting)
+            {cameraParams.i18n.settings.flash.auto}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -602,7 +615,7 @@ const SettingsPageFlash = ({
                 : {})
             }}
           >
-            Always on
+            {cameraParams.i18n.settings.flash.torch}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -621,7 +634,7 @@ const SettingsPageFlash = ({
                 : {})
             }}
           >
-            On to click photo
+            {cameraParams.i18n.settings.flash.on}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -640,7 +653,7 @@ const SettingsPageFlash = ({
                 : {})
             }}
           >
-            Always off
+            {cameraParams.i18n.settings.flash.off}
           </Text>
         </TouchableOpacity>
       </ScrollView>
@@ -658,13 +671,17 @@ const SettingsPageFocus = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Focus</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.focus.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Auto focus</Text>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.focus.autoFocus.title}
+          </Text>
           <View style={{ ...styles.buttons, marginTop: 0 }}>
-            {["on", "off"].map(item => {
+            {["on", "off"].map((item: "on" | "off") => {
               return (
                 <TouchableOpacity
                   key={`zoom_${item}`}
@@ -687,14 +704,16 @@ const SettingsPageFocus = ({
                         : {})
                     }}
                   >
-                    {item}
+                    {cameraParams.i18n.settings.focus.autoFocus[item]}
                   </Text>
                 </TouchableOpacity>
               );
             })}
           </View>
           <View style={{ ...styles.inputGroup, marginTop: 25 }}>
-            <Text style={styles.label}>Focus depth</Text>
+            <Text style={styles.label}>
+              {cameraParams.i18n.settings.focus.focusDepth.title}
+            </Text>
             <Slider
               style={styles.slider}
               onValueChange={value => cameraParams.setFocusDepth(value)}
@@ -704,7 +723,7 @@ const SettingsPageFocus = ({
               maximumValue={1}
             />
             <Text style={{ marginTop: 25, fontSize: 18, marginBottom: 25 }}>
-              "0" means infinite focus and "1" means focus as close as possible.
+              {cameraParams.i18n.settings.focus.focusDepth.details}
             </Text>
           </View>
         </View>
@@ -740,11 +759,15 @@ const SettingsPageQuality = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Quality</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.quality.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Compression</Text>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.quality.compression}
+          </Text>
           <Slider
             style={styles.slider}
             onValueChange={value => cameraParams.setQuality(value)}
@@ -755,26 +778,31 @@ const SettingsPageQuality = ({
           />
         </View>
         <Text style={{ marginTop: 25, fontSize: 18, marginBottom: 25 }}>
-          "0.1" means very low quality and very high compression, and "1.0"
-          means no compression and very high quality (but consumes more data)
+          {cameraParams.i18n.settings.quality.details}
         </Text>
         <TouchableOpacity
           style={{ ...styles.button, ...styles.buttonFull }}
           onPress={() => cameraParams.setQuality(0.25)}
         >
-          <Text style={styles.buttonText}>Low quality (least data)</Text>
+          <Text style={styles.buttonText}>
+            {cameraParams.i18n.settings.quality.low}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.button, ...styles.buttonFull }}
           onPress={() => cameraParams.setQuality(0.5)}
         >
-          <Text style={styles.buttonText}>Medium quality</Text>
+          <Text style={styles.buttonText}>
+            {cameraParams.i18n.settings.quality.medium}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.button, ...styles.buttonFull }}
           onPress={() => cameraParams.setQuality(0.9)}
         >
-          <Text style={styles.buttonText}>High quality (most data)</Text>
+          <Text style={styles.buttonText}>
+            {cameraParams.i18n.settings.quality.high}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -791,43 +819,51 @@ const SettingsPageLanguage = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Interface</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.interface.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Keep screen on</Text>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.interface.screenOn}
+          </Text>
           <View style={{ ...styles.buttons, marginTop: 0 }}>
-            {["always", "camera", "never"].map(item => {
-              return (
-                <TouchableOpacity
-                  key={`zoom_${item}`}
-                  style={{
-                    ...styles.button,
-                    ...(cameraParams.screenOn === item
-                      ? styles.buttonSelected
-                      : {})
-                  }}
-                  onPress={() => cameraParams.setScreenOn(item)}
-                >
-                  <Text
+            {["always", "camera", "never"].map(
+              (item: "always" | "camera" | "never") => {
+                return (
+                  <TouchableOpacity
+                    key={`zoom_${item}`}
                     style={{
-                      ...styles.buttonText,
-                      fontSize: 18,
-                      textTransform: "capitalize",
+                      ...styles.button,
                       ...(cameraParams.screenOn === item
-                        ? styles.buttonTextSelected
+                        ? styles.buttonSelected
                         : {})
                     }}
+                    onPress={() => cameraParams.setScreenOn(item)}
                   >
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+                    <Text
+                      style={{
+                        ...styles.buttonText,
+                        fontSize: 18,
+                        textTransform: "capitalize",
+                        ...(cameraParams.screenOn === item
+                          ? styles.buttonTextSelected
+                          : {})
+                      }}
+                    >
+                      {cameraParams.i18n.settings.interface[item]}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }
+            )}
           </View>
         </View>
         <View style={{ ...styles.inputGroup, marginTop: 25 }}>
-          <Text style={styles.label}>Language</Text>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.interface.language}
+          </Text>
           <Picker
             style={styles.input}
             onValueChange={text => cameraParams.setLocale(text)}
@@ -853,11 +889,15 @@ const SettingsPageZoom = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Zoom</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.zoom.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Zoom</Text>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.zoom.title}
+          </Text>
           <Slider
             style={styles.slider}
             onValueChange={value => cameraParams.setZoom(value)}
@@ -887,7 +927,12 @@ const SettingsPageZoom = ({
 
 const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
   if (cameraParams.active === "settings")
-    return <SettingsPageHome setActive={cameraParams.setActive} />;
+    return (
+      <SettingsPageHome
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
+    );
   if (cameraParams.active === "settings-webapp")
     return (
       <SettingsPageWebapp
@@ -998,3 +1043,76 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
     </View>
   );
 };
+
+const locales = {
+  en: {
+    live: {
+      title: "Live"
+    },
+    photo: {
+      title: "Photo"
+    },
+    subtitles: {
+      title: "Subtitles"
+    },
+    settings: {
+      title: "Settings",
+      webApp: {
+        title: "Web App",
+        linkEndpoint: "Link endpoint",
+        guessable:
+          "It's a good idea to choose a long and unique endpoint that's not easily guessable.",
+        linkDetails:
+          "To use the web app, go to $LINK from your desktop web browser."
+      },
+      focus: {
+        title: "Focus",
+        autoFocus: {
+          title: "Auto focus",
+          on: "On",
+          off: "Off"
+        },
+        focusDepth: {
+          title: "Focus depth",
+          details:
+            '"0" means infinite focus and "1" means focus as close as possible.'
+        }
+      },
+      subtitles: {
+        title: "Subtitles"
+      },
+      quality: {
+        title: "Quality",
+        compression: "Compression",
+        details:
+          '"0.1" means very low quality and very high compression, and "1.0" means no compression and very high quality (but consumes more data)',
+        low: "Low quality (least data)",
+        medium: "Medium quality",
+        high: "High quality (most data)"
+      },
+      interface: {
+        title: "Interface",
+        screenOn: "Keep screen on",
+        always: "Always",
+        camera: "Camera",
+        never: "Never",
+        language: "Language"
+      },
+      about: {
+        title: "About"
+      },
+      zoom: {
+        title: "Zoom"
+      },
+      flash: {
+        title: "Flash",
+        auto: "Auto (based on lighting)",
+        torch: "Always on",
+        on: "On to click photo",
+        off: "Always off"
+      }
+    }
+  }
+};
+
+type LocalesType = typeof locales.en;
