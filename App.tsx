@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
+import * as WebBrowser from "expo-web-browser";
 
 import * as firebase from "firebase/app";
 import "firebase/database";
@@ -381,14 +382,18 @@ const SettingsPageHome = ({
             icon: "info-with-circle",
             type: "entypo",
             label: "About",
-            to: "about"
+            url:
+              "https://github.com/AnandChowdhary/mockingbird/blob/master/README.md"
           }
         ].map(item => {
           return (
             <TouchableOpacity
-              onPress={() => setActive(`settings-${item.to}`)}
+              key={`${item.label}${item.to}${item.url}`}
+              onPress={async () => {
+                if (item.to) return setActive(`settings-${item.to}`);
+                if (item.url) await WebBrowser.openBrowserAsync(item.url);
+              }}
               style={styles.settingsLink}
-              key={item.to}
             >
               <View style={styles.settingsLinkInner}>
                 <View style={styles.settingsLinkIcon}>
@@ -483,16 +488,6 @@ const SettingsPageLanguage = ({
   return <></>;
 };
 
-const SettingsPageAbout = ({
-  setActive,
-  cameraParams
-}: {
-  setActive: React.Dispatch<string>;
-  cameraParams: CameraParams;
-}) => {
-  return <></>;
-};
-
 const SettingsPageZoom = ({
   setActive,
   cameraParams
@@ -551,13 +546,6 @@ const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
   if (cameraParams.active === "settings-language")
     return (
       <SettingsPageLanguage
-        cameraParams={cameraParams}
-        setActive={cameraParams.setActive}
-      />
-    );
-  if (cameraParams.active === "settings-about")
-    return (
-      <SettingsPageAbout
         cameraParams={cameraParams}
         setActive={cameraParams.setActive}
       />
