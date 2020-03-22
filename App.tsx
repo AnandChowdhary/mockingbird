@@ -39,6 +39,8 @@ interface CameraParams {
   setQuality: React.Dispatch<number>;
   screenOn: string;
   setScreenOn: React.Dispatch<string>;
+  type: string;
+  setType: React.Dispatch<string>;
 }
 
 /**
@@ -62,7 +64,7 @@ const storage = firebase.storage();
 const database = firebase.database();
 
 export default function App() {
-  const [active, setActive] = useState("settings-language");
+  const [active, setActive] = useState("photo");
 
   /**
    * Global app settings
@@ -74,6 +76,7 @@ export default function App() {
   const [endpoint, setEndpoint] = useState("default");
   const [locale, setLocale] = useState("en");
   const [screenOn, setScreenOn] = useState("camera");
+  const [type, setType] = useState(Camera.Constants.Type.back);
   const [quality, setQuality] = useState(0.5);
   const cameraParams = {
     active,
@@ -93,7 +96,9 @@ export default function App() {
     quality,
     setQuality,
     screenOn,
-    setScreenOn
+    setScreenOn,
+    type,
+    setType
   };
 
   useEffect(() => {
@@ -378,6 +383,9 @@ const styles = StyleSheet.create({
   buttonFull: {
     width: "100%"
   },
+  buttonHalf: {
+    width: "48%"
+  },
   buttonSelected: {
     backgroundColor: "#333"
   },
@@ -647,7 +655,62 @@ const SettingsPageFocus = ({
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Focus</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Auto focus</Text>
+          <View style={{ ...styles.buttons, marginTop: 0 }}>
+            {["on", "off"].map(item => {
+              return (
+                <TouchableOpacity
+                  key={`zoom_${item}`}
+                  style={{
+                    ...styles.button,
+                    ...styles.buttonHalf,
+                    ...(cameraParams.autofocus === item
+                      ? styles.buttonSelected
+                      : {})
+                  }}
+                  onPress={() => cameraParams.setAutofocus(item)}
+                >
+                  <Text
+                    style={{
+                      ...styles.buttonText,
+                      fontSize: 18,
+                      textTransform: "capitalize",
+                      ...(cameraParams.autofocus === item
+                        ? styles.buttonTextSelected
+                        : {})
+                    }}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          <View style={{ ...styles.inputGroup, marginTop: 25 }}>
+            <Text style={styles.label}>Focus depth</Text>
+            <Slider
+              style={styles.slider}
+              onValueChange={value => cameraParams.setFocusDepth(value)}
+              value={cameraParams.focusDepth}
+              step={0.1}
+              minimumValue={0}
+              maximumValue={1}
+            />
+            <Text style={{ marginTop: 25, fontSize: 18, marginBottom: 25 }}>
+              "0" means infinite focus and "1" means focus as close as possible.
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 const SettingsPageSubtitles = ({
@@ -657,7 +720,14 @@ const SettingsPageSubtitles = ({
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Subtitles</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}></ScrollView>
+    </View>
+  );
 };
 
 const SettingsPageQuality = ({
@@ -872,7 +942,6 @@ const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
 const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState<Camera>(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
@@ -899,7 +968,7 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
         useCamera2Api={true}
         ref={ref => setCamera(ref)}
         style={styles.cameraInner}
-        type={type}
+        type={cameraParams.type}
         zoom={cameraParams.zoom}
         autoFocus={cameraParams.autofocus}
         flashMode={cameraParams.flashMode}
@@ -910,10 +979,11 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
             <TouchableOpacity
               style={styles.cameraBtn}
               onPress={() => {
-                setType(
-                  type == Camera.Constants.Type.back
-                    ? Camera.Constants.Type.front
-                    : Camera.Constants.Type.back
+                cameraParams.setType(
+                  cameraParams.type === "back" ||
+                    cameraParams.type == Camera.Constants.Type.back
+                    ? "front"
+                    : "back"
                 );
               }}
             >
