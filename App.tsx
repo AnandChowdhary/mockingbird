@@ -7,7 +7,9 @@ import {
   SafeAreaView,
   ScrollView,
   TextInput,
-  StatusBar
+  StatusBar,
+  Picker,
+  Slider
 } from "react-native";
 import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
@@ -57,13 +59,13 @@ const storage = firebase.storage();
 const database = firebase.database();
 
 export default function App() {
-  const [active, setActive] = useState("settings-webapp");
+  const [active, setActive] = useState("settings-flash");
 
   /**
    * Global app settings
    */
-  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.auto); // auto, on, off, torch
-  const [autofocus, setAutofocus] = useState(Camera.Constants.AutoFocus.on); // on, off
+  const [flashMode, setFlashMode] = useState("auto"); // auto, on, off, torch
+  const [autofocus, setAutofocus] = useState("on"); // on, off
   const [zoom, setZoom] = useState(0); // 0 to 1
   const [focusDepth, setFocusDepth] = useState(0); // 0 (farthest) to 1 (closest)
   const [endpoint, setEndpoint] = useState("default");
@@ -340,6 +342,34 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5
+  },
+  slider: {},
+  buttons: {
+    marginTop: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap"
+  },
+  button: {
+    backgroundColor: "#eee",
+    width: "30%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    marginBottom: 15
+  },
+  buttonFull: {
+    width: "100%"
+  },
+  buttonSelected: {
+    backgroundColor: "#333"
+  },
+  buttonText: {
+    fontSize: 28
+  },
+  buttonTextSelected: {
+    color: "#fff"
   }
 });
 
@@ -500,17 +530,101 @@ const SettingsPageWebapp = ({
   );
 };
 
-const SettingsPageFocus = ({
+const SettingsPageFlash = ({
   setActive,
   cameraParams
 }: {
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Flash</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...styles.buttonFull,
+            ...(cameraParams.flashMode === "auto" ? styles.buttonSelected : {})
+          }}
+          onPress={() => cameraParams.setFlashMode("auto")}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(cameraParams.flashMode === "auto"
+                ? styles.buttonTextSelected
+                : {})
+            }}
+          >
+            Auto (based on lighting)
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...styles.buttonFull,
+            ...(cameraParams.flashMode === "torch" ? styles.buttonSelected : {})
+          }}
+          onPress={() => cameraParams.setFlashMode("torch")}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(cameraParams.flashMode === "torch"
+                ? styles.buttonTextSelected
+                : {})
+            }}
+          >
+            Always on
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...styles.buttonFull,
+            ...(cameraParams.flashMode === "on" ? styles.buttonSelected : {})
+          }}
+          onPress={() => cameraParams.setFlashMode("on")}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(cameraParams.flashMode === "on"
+                ? styles.buttonTextSelected
+                : {})
+            }}
+          >
+            On to click photo
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            ...styles.button,
+            ...styles.buttonFull,
+            ...(cameraParams.flashMode === "off" ? styles.buttonSelected : {})
+          }}
+          onPress={() => cameraParams.setFlashMode("off")}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              ...(cameraParams.flashMode === "off"
+                ? styles.buttonTextSelected
+                : {})
+            }}
+          >
+            Always off
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
 };
 
-const SettingsPageFlash = ({
+const SettingsPageFocus = ({
   setActive,
   cameraParams
 }: {
@@ -537,7 +651,48 @@ const SettingsPageQuality = ({
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Quality</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Compression</Text>
+          <Slider
+            style={styles.slider}
+            onValueChange={value => cameraParams.setQuality(value)}
+            value={cameraParams.quality}
+            step={0.1}
+            minimumValue={0}
+            maximumValue={1}
+          />
+        </View>
+        <Text style={{ marginTop: 25, fontSize: 18, marginBottom: 25 }}>
+          "0.1" means very low quality and very high compression, and "1.0"
+          means no compression and very high quality (but consumes more data)
+        </Text>
+        <TouchableOpacity
+          style={{ ...styles.button, ...styles.buttonFull }}
+          onPress={() => cameraParams.setQuality(0.25)}
+        >
+          <Text style={styles.buttonText}>Low quality (least data)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ ...styles.button, ...styles.buttonFull }}
+          onPress={() => cameraParams.setQuality(0.5)}
+        >
+          <Text style={styles.buttonText}>Medium quality</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ ...styles.button, ...styles.buttonFull }}
+          onPress={() => cameraParams.setQuality(0.9)}
+        >
+          <Text style={styles.buttonText}>High quality (most data)</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
 };
 
 const SettingsPageLanguage = ({
@@ -547,7 +702,27 @@ const SettingsPageLanguage = ({
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Language</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Language</Text>
+          <Picker
+            style={styles.input}
+            onValueChange={text => cameraParams.setLocale(text)}
+            selectedValue={cameraParams.locale}
+          >
+            <Picker.Item label="English" value="en" />
+            <Picker.Item label="Nederlands" value="nl" />
+            <Picker.Item label="Hindi" value="hi" />
+          </Picker>
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 const SettingsPageZoom = ({
@@ -557,7 +732,39 @@ const SettingsPageZoom = ({
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Zoom</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Zoom</Text>
+          <Slider
+            style={styles.slider}
+            onValueChange={value => cameraParams.setZoom(value)}
+            value={cameraParams.zoom}
+            step={0.1}
+            minimumValue={0}
+            maximumValue={1}
+          />
+        </View>
+        <View style={styles.buttons}>
+          {[0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => {
+            return (
+              <TouchableOpacity
+                key={`zoom_${item}`}
+                style={styles.button}
+                onPress={() => cameraParams.setZoom(item / 10)}
+              >
+                <Text style={styles.buttonText}>{item * 10}%</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
+  );
 };
 
 const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
@@ -656,7 +863,7 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
               style={styles.cameraBtn}
               onPress={() => {
                 setType(
-                  type === Camera.Constants.Type.back
+                  type == Camera.Constants.Type.back
                     ? Camera.Constants.Type.front
                     : Camera.Constants.Type.back
                 );
