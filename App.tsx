@@ -169,11 +169,37 @@ export default function App() {
             <Ionicons
               name="md-cog"
               size={32}
-              color={active === "settings" ? "#3498db" : "#777"}
+              color={
+                [
+                  "settings",
+                  "settings-webapp",
+                  "settings-zoom",
+                  "settings-focus",
+                  "settings-flash",
+                  "settings-subtitles",
+                  "settings-quality",
+                  "settings-language",
+                  "settings-about"
+                ].includes(active)
+                  ? "#3498db"
+                  : "#777"
+              }
             />
             <Text
               style={{
-                ...(active === "settings" ? styles.navItemActiveText : {})
+                ...([
+                  "settings",
+                  "settings-webapp",
+                  "settings-zoom",
+                  "settings-focus",
+                  "settings-flash",
+                  "settings-subtitles",
+                  "settings-quality",
+                  "settings-language",
+                  "settings-about"
+                ].includes(active)
+                  ? styles.navItemActiveText
+                  : {})
               }}
             >
               Settings
@@ -258,7 +284,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24
   },
-  settingsHome: {},
   settingsLink: {
     paddingVertical: 15,
     borderBottomColor: "#eee",
@@ -314,7 +339,7 @@ const SettingsPageHome = ({
   setActive: React.Dispatch<string>;
 }) => {
   return (
-    <View style={{ ...styles.settingsHome, ...styles.page }}>
+    <View style={styles.page}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Settings</Text>
       </View>
@@ -361,7 +386,7 @@ const SettingsPageHome = ({
         ].map(item => {
           return (
             <TouchableOpacity
-              onPress={() => setActive(item.to)}
+              onPress={() => setActive(`settings-${item.to}`)}
               style={styles.settingsLink}
               key={item.to}
             >
@@ -479,42 +504,63 @@ const SettingsPageZoom = ({
 };
 
 const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
-  const [active, setActive] = useState("home");
-  if (active === "home") return <SettingsPageHome setActive={setActive} />;
-  if (active === "webapp")
+  if (cameraParams.active === "settings")
+    return <SettingsPageHome setActive={cameraParams.setActive} />;
+  if (cameraParams.active === "settings-webapp")
     return (
-      <SettingsPageWebapp cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageWebapp
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
-  if (active === "zoom")
+  if (cameraParams.active === "settings-zoom")
     return (
-      <SettingsPageZoom cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageZoom
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
-  if (active === "focus")
+  if (cameraParams.active === "settings-focus")
     return (
-      <SettingsPageFocus cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageFocus
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
-  if (active === "flash")
+  if (cameraParams.active === "settings-flash")
     return (
-      <SettingsPageFlash cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageFlash
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
-  if (active === "subtitles")
+  if (cameraParams.active === "settings-subtitles")
     return (
       <SettingsPageSubtitles
         cameraParams={cameraParams}
-        setActive={setActive}
+        setActive={cameraParams.setActive}
       />
     );
-  if (active === "quality")
+  if (cameraParams.active === "settings-quality")
     return (
-      <SettingsPageQuality cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageQuality
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
-  if (active === "language")
+  if (cameraParams.active === "settings-language")
     return (
-      <SettingsPageLanguage cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageLanguage
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
-  if (active === "about")
+  if (cameraParams.active === "settings-about")
     return (
-      <SettingsPageAbout cameraParams={cameraParams} setActive={setActive} />
+      <SettingsPageAbout
+        cameraParams={cameraParams}
+        setActive={cameraParams.setActive}
+      />
     );
 };
 
