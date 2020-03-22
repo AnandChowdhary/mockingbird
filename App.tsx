@@ -9,6 +9,30 @@ import {
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 
+import * as firebase from "firebase/app";
+import "firebase/database";
+import "firebase/storage";
+
+/**
+ * This is the public web API key (you can see this)
+ * This is NOT the Firebase admin API key
+ */
+const WEB_API_KEY = "AIzaSyCSo4PAiC-cr1euluE4XybGZntQve3rc78";
+
+try {
+  firebase.initializeApp({
+    apiKey: WEB_API_KEY,
+    authDomain: "frankenstein-ce9dd.firebaseapp.com",
+    databaseURL: "https://frankenstein-ce9dd.firebaseio.com",
+    projectId: "frankenstein-ce9dd",
+    storageBucket: "frankenstein-ce9dd.appspot.com",
+    messagingSenderId: "168976872219",
+    appId: "1:168976872219:web:bd6ef874bb4a27feb419be"
+  });
+} catch (error) {}
+const storage = firebase.storage();
+const database = firebase.database();
+
 export default function App() {
   const [active, setActive] = useState("photo");
   return (
@@ -170,8 +194,38 @@ const styles = StyleSheet.create({
   }
 });
 
+/**
+ * @source https://github.com/aaronksaunders/expo-rn-firebase-image-upload/blob/master/README.md
+ * @param uri
+ * @param progressCallback
+ */
+export const uploadAsFile = async (
+  uri: string,
+  progressCallback?: Function
+) => {
+  console.log("uploadAsFile", uri);
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  var metadata = {
+    contentType: "image/jpeg"
+  };
+  let name = new Date().getTime() + "-media.jpg";
+  const ref = storage.ref().child("assets/" + name);
+  const task = await ref.put(blob, metadata);
+  const url: string = await task.ref.getDownloadURL();
+  await database.ref().update({ image: url });
+  setTimeout(() => {
+    storage
+      .ref(ref.name)
+      .delete()
+      .then(() => {})
+      .catch(() => {});
+  }, 10000);
+};
+
 const CameraPage = () => {
   const [hasPermission, setHasPermission] = useState(null);
+  const [camera, setCamera] = useState<Camera>(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   useEffect(() => {
     (async () => {
@@ -179,6 +233,14 @@ const CameraPage = () => {
       setHasPermission(status === "granted");
     })();
   }, []);
+  const click = async () => {
+    if (!camera) return;
+    const image = await camera.takePictureAsync({
+      quality: 0.1
+    });
+    console.log(image);
+    await uploadAsFile(image.uri);
+  };
 
   if (hasPermission === null) {
     return <View />;
@@ -188,7 +250,11 @@ const CameraPage = () => {
   }
   return (
     <View style={styles.cameraPage}>
-      <Camera style={styles.cameraInner} type={type}>
+      <Camera
+        ref={ref => setCamera(ref)}
+        style={styles.cameraInner}
+        type={type}
+      >
         <View style={styles.cameraItems}>
           <View style={styles.cameraNav}>
             <TouchableOpacity
@@ -203,7 +269,7 @@ const CameraPage = () => {
             >
               <Text style={styles.cameraBtnText}>Flip</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cameraBtn} onPress={() => {}}>
+            <TouchableOpacity style={styles.cameraBtn} onPress={click}>
               <Text style={styles.cameraBtnText}>Click</Text>
             </TouchableOpacity>
           </View>
