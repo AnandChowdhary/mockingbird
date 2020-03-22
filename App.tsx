@@ -14,6 +14,7 @@ import {
 import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import * as WebBrowser from "expo-web-browser";
+import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
 
 import * as firebase from "firebase/app";
 import "firebase/database";
@@ -36,6 +37,8 @@ interface CameraParams {
   setLocale: React.Dispatch<string>;
   quality: number;
   setQuality: React.Dispatch<number>;
+  screenOn: string;
+  setScreenOn: React.Dispatch<string>;
 }
 
 /**
@@ -59,17 +62,18 @@ const storage = firebase.storage();
 const database = firebase.database();
 
 export default function App() {
-  const [active, setActive] = useState("settings-flash");
+  const [active, setActive] = useState("settings-language");
 
   /**
    * Global app settings
    */
-  const [flashMode, setFlashMode] = useState("auto"); // auto, on, off, torch
-  const [autofocus, setAutofocus] = useState("on"); // on, off
-  const [zoom, setZoom] = useState(0); // 0 to 1
-  const [focusDepth, setFocusDepth] = useState(0); // 0 (farthest) to 1 (closest)
+  const [flashMode, setFlashMode] = useState("auto");
+  const [autofocus, setAutofocus] = useState("on");
+  const [zoom, setZoom] = useState(0);
+  const [focusDepth, setFocusDepth] = useState(0);
   const [endpoint, setEndpoint] = useState("default");
   const [locale, setLocale] = useState("en");
+  const [screenOn, setScreenOn] = useState("camera");
   const [quality, setQuality] = useState(0.5);
   const cameraParams = {
     active,
@@ -87,8 +91,20 @@ export default function App() {
     locale,
     setLocale,
     quality,
-    setQuality
+    setQuality,
+    screenOn,
+    setScreenOn
   };
+
+  useEffect(() => {
+    deactivateKeepAwake();
+    if (screenOn === "always") return activateKeepAwake();
+    if (
+      screenOn === "camera" &&
+      ["live", "photo", "subtitles"].includes("active")
+    )
+      return activateKeepAwake();
+  }, [screenOn, active]);
 
   return (
     <SafeAreaView style={styles.parent}>
@@ -709,6 +725,38 @@ const SettingsPageLanguage = ({
       </View>
       <ScrollView style={styles.pagePadded}>
         <View style={styles.inputGroup}>
+          <Text style={styles.label}>Keep screen on</Text>
+          <View style={{ ...styles.buttons, marginTop: 0 }}>
+            {["always", "camera", "never"].map(item => {
+              return (
+                <TouchableOpacity
+                  key={`zoom_${item}`}
+                  style={{
+                    ...styles.button,
+                    ...(cameraParams.screenOn === item
+                      ? styles.buttonSelected
+                      : {})
+                  }}
+                  onPress={() => cameraParams.setScreenOn(item)}
+                >
+                  <Text
+                    style={{
+                      ...styles.buttonText,
+                      fontSize: 18,
+                      textTransform: "capitalize",
+                      ...(cameraParams.screenOn === item
+                        ? styles.buttonTextSelected
+                        : {})
+                    }}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+        <View style={{ ...styles.inputGroup, marginTop: 25 }}>
           <Text style={styles.label}>Language</Text>
           <Picker
             style={styles.input}
