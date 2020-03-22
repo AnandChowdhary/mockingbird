@@ -5,7 +5,9 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  TextInput,
+  StatusBar
 } from "react-native";
 import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
@@ -28,6 +30,10 @@ interface CameraParams {
   setFocusDepth: React.Dispatch<number>;
   endpoint: string;
   setEndpoint: React.Dispatch<string>;
+  locale: string;
+  setLocale: React.Dispatch<string>;
+  quality: number;
+  setQuality: React.Dispatch<number>;
 }
 
 /**
@@ -51,7 +57,7 @@ const storage = firebase.storage();
 const database = firebase.database();
 
 export default function App() {
-  const [active, setActive] = useState("settings");
+  const [active, setActive] = useState("settings-webapp");
 
   /**
    * Global app settings
@@ -61,6 +67,8 @@ export default function App() {
   const [zoom, setZoom] = useState(0); // 0 to 1
   const [focusDepth, setFocusDepth] = useState(0); // 0 (farthest) to 1 (closest)
   const [endpoint, setEndpoint] = useState("default");
+  const [locale, setLocale] = useState("en");
+  const [quality, setQuality] = useState(0.5);
   const cameraParams = {
     active,
     setActive,
@@ -73,11 +81,16 @@ export default function App() {
     focusDepth,
     setFocusDepth,
     endpoint,
-    setEndpoint
+    setEndpoint,
+    locale,
+    setLocale,
+    quality,
+    setQuality
   };
 
   return (
     <SafeAreaView style={styles.parent}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         {active === "live" ? <CameraPage cameraParams={cameraParams} /> : <></>}
         {active === "photo" ? (
@@ -86,7 +99,17 @@ export default function App() {
           <></>
         )}
         {active === "subtitles" ? <Text>subtitles</Text> : <></>}
-        {active === "settings" ? (
+        {[
+          "settings",
+          "settings-webapp",
+          "settings-zoom",
+          "settings-focus",
+          "settings-flash",
+          "settings-subtitles",
+          "settings-quality",
+          "settings-language",
+          "settings-about"
+        ].includes(active) ? (
           <SettingsPage cameraParams={cameraParams} />
         ) : (
           <></>
@@ -275,15 +298,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 5,
-    paddingBottom: 10
+    paddingTop: 10,
+    paddingBottom: 15
   },
   page: {
     width: "100%",
     height: "100%"
   },
+  pagePadded: {
+    padding: 25
+  },
   headerText: {
-    fontSize: 24
+    fontSize: 28,
+    fontWeight: "bold"
   },
   settingsLink: {
     paddingVertical: 15,
@@ -291,7 +318,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1
   },
   settingsLinkIcon: {
-    width: 75,
+    width: 85,
     flexDirection: "row",
     justifyContent: "center"
   },
@@ -300,7 +327,19 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   settingsLinkText: {
-    fontSize: 18
+    fontSize: 24
+  },
+  inputGroup: {},
+  label: {
+    fontSize: 18,
+    marginBottom: 10
+  },
+  input: {
+    padding: 15,
+    fontSize: 24,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5
   }
 });
 
@@ -309,19 +348,15 @@ const styles = StyleSheet.create({
  * @param uri
  * @param progressCallback
  */
-export const uploadAsFile = async (
-  endpoint: string,
-  uri: string,
-  progressCallback?: Function
-) => {
+export const uploadAsFile = async (endpoint: string, uri: string) => {
   console.log("uploadAsFile", uri);
   const response = await fetch(uri);
   const blob = await response.blob();
   var metadata = {
     contentType: "image/jpeg"
   };
-  let name = new Date().getTime() + "-media.jpg";
-  const ref = storage.ref().child("assets/" + name);
+  const name = `${new Date().getTime()}-upload.jpg`;
+  const ref = storage.ref().child(`users/${endpoint}/${name}`);
   const task = await ref.put(blob, metadata);
   const url: string = await task.ref.getDownloadURL();
   await database.ref().update({ image: url });
@@ -398,22 +433,22 @@ const SettingsPageHome = ({
               <View style={styles.settingsLinkInner}>
                 <View style={styles.settingsLinkIcon}>
                   {item.type === "feather" ? (
-                    <Feather name={item.icon} size={32} />
+                    <Feather name={item.icon} size={36} />
                   ) : (
                     <></>
                   )}
                   {item.type === "ionicons" ? (
-                    <Ionicons name={item.icon} size={32} />
+                    <Ionicons name={item.icon} size={36} />
                   ) : (
                     <></>
                   )}
                   {item.type === "entypo" ? (
-                    <Entypo name={item.icon} size={32} />
+                    <Entypo name={item.icon} size={36} />
                   ) : (
                     <></>
                   )}
                   {item.type === "material" ? (
-                    <MaterialIcons name={item.icon} size={32} />
+                    <MaterialIcons name={item.icon} size={36} />
                   ) : (
                     <></>
                   )}
@@ -435,7 +470,34 @@ const SettingsPageWebapp = ({
   setActive: React.Dispatch<string>;
   cameraParams: CameraParams;
 }) => {
-  return <></>;
+  return (
+    <View style={styles.page}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Web app</Text>
+      </View>
+      <ScrollView style={styles.pagePadded}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Link endpoint</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => cameraParams.setEndpoint(text)}
+            value={cameraParams.endpoint}
+          />
+        </View>
+        <Text style={{ marginTop: 25, fontSize: 18 }}>
+          It's a good idea to choose a long and unique endpoint that's not
+          easily guessable.
+        </Text>
+        <Text style={{ marginTop: 25, fontSize: 18 }}>
+          To use the web app, go to{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            https://mockingbird.netlify.com/{cameraParams.endpoint}
+          </Text>{" "}
+          from your desktop web browser.
+        </Text>
+      </ScrollView>
+    </View>
+  );
 };
 
 const SettingsPageFocus = ({
@@ -565,7 +627,7 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
   const click = async () => {
     if (!camera) return;
     const image = await camera.takePictureAsync({
-      quality: 0.1
+      quality: cameraParams.quality
     });
     await uploadAsFile(cameraParams.endpoint, image.uri);
   };
