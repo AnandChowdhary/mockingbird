@@ -4,9 +4,10 @@ import {
   Text,
   View,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  ScrollView
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 
 import * as firebase from "firebase/app";
@@ -229,7 +230,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#000",
     margin: 10
-  }
+  },
+  settingsLink: {},
+  settingsLinkInner: {},
+  settingsLinkText: {}
 });
 
 /**
@@ -268,9 +272,152 @@ const SettingsPageHome = ({
 }) => {
   return (
     <View>
-      <Text>This is the new settings page</Text>
+      <ScrollView>
+        {[
+          {
+            icon: "md-lock",
+            type: "ionicons",
+            label: "Web app",
+            to: "webapp"
+          },
+          { icon: "zoom-in", type: "feather", label: "Zoom", to: "zoom" },
+          {
+            icon: "center-focus-strong",
+            type: "material",
+            label: "Focus",
+            to: "focus"
+          },
+          { icon: "flashlight", type: "entypo", label: "Flash", to: "flash" },
+          {
+            icon: "subtitles",
+            type: "material",
+            label: "Subtitles",
+            to: "subtitles"
+          },
+          {
+            icon: "high-quality",
+            type: "material",
+            label: "Quality",
+            to: "quality"
+          },
+          {
+            icon: "language",
+            type: "entypo",
+            label: "Language",
+            to: "language"
+          },
+          {
+            icon: "info-with-circle",
+            type: "entypo",
+            label: "About",
+            to: "about"
+          }
+        ].map(item => {
+          return (
+            <TouchableOpacity
+              onPress={() => setActive(item.to)}
+              style={styles.settingsLink}
+              key={item.to}
+            >
+              <View style={styles.settingsLinkInner}>
+                {item.type === "feather" ? (
+                  <Feather name={item.icon} size={24} />
+                ) : (
+                  <></>
+                )}
+                {item.type === "ionicons" ? (
+                  <Ionicons name={item.icon} size={24} />
+                ) : (
+                  <></>
+                )}
+                {item.type === "entypo" ? (
+                  <Entypo name={item.icon} size={24} />
+                ) : (
+                  <></>
+                )}
+                {item.type === "material" ? (
+                  <MaterialIcons name={item.icon} size={24} />
+                ) : (
+                  <></>
+                )}
+                <Text style={styles.settingsLinkText}>{item.label}</Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
     </View>
   );
+};
+
+const SettingsPageWebapp = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPageFocus = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPageFlash = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPageSubtitles = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPageQuality = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPageLanguage = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
+};
+
+const SettingsPageAbout = ({
+  setActive,
+  cameraParams
+}: {
+  setActive: React.Dispatch<string>;
+  cameraParams: CameraParams;
+}) => {
+  return <></>;
 };
 
 const SettingsPageZoom = ({
@@ -286,9 +433,40 @@ const SettingsPageZoom = ({
 const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
   const [active, setActive] = useState("home");
   if (active === "home") return <SettingsPageHome setActive={setActive} />;
-  if (active === "security")
+  if (active === "webapp")
+    return (
+      <SettingsPageWebapp cameraParams={cameraParams} setActive={setActive} />
+    );
+  if (active === "zoom")
     return (
       <SettingsPageZoom cameraParams={cameraParams} setActive={setActive} />
+    );
+  if (active === "focus")
+    return (
+      <SettingsPageFocus cameraParams={cameraParams} setActive={setActive} />
+    );
+  if (active === "flash")
+    return (
+      <SettingsPageFlash cameraParams={cameraParams} setActive={setActive} />
+    );
+  if (active === "subtitles")
+    return (
+      <SettingsPageSubtitles
+        cameraParams={cameraParams}
+        setActive={setActive}
+      />
+    );
+  if (active === "quality")
+    return (
+      <SettingsPageQuality cameraParams={cameraParams} setActive={setActive} />
+    );
+  if (active === "language")
+    return (
+      <SettingsPageLanguage cameraParams={cameraParams} setActive={setActive} />
+    );
+  if (active === "about")
+    return (
+      <SettingsPageAbout cameraParams={cameraParams} setActive={setActive} />
     );
 };
 
