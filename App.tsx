@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +7,7 @@ import {
   SafeAreaView
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Camera } from "expo-camera";
 
 export default function App() {
   const [active, setActive] = useState("photo");
@@ -120,7 +121,8 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   navItem: {
-    flex: 1
+    flex: 1,
+    paddingTop: 10
   },
   navItemInner: {
     alignItems: "center"
@@ -134,9 +136,79 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
+  },
+  cameraPage: {
+    width: "100%",
+    height: "100%",
+    flex: 1
+  },
+  cameraInner: {
+    width: "100%",
+    height: "100%"
+  },
+  cameraItems: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-end"
+  },
+  cameraNav: {
+    marginBottom: 25,
+    flexDirection: "row"
+  },
+  cameraBtn: {
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    borderRadius: 25,
+    marginHorizontal: 10
+  },
+  cameraBtnText: {
+    fontSize: 24,
+    color: "#000",
+    margin: 10
   }
 });
 
 const CameraPage = () => {
-  return <Text>Hello Camera</Text>;
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+  return (
+    <View style={styles.cameraPage}>
+      <Camera style={styles.cameraInner} type={type}>
+        <View style={styles.cameraItems}>
+          <View style={styles.cameraNav}>
+            <TouchableOpacity
+              style={styles.cameraBtn}
+              onPress={() => {
+                setType(
+                  type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back
+                );
+              }}
+            >
+              <Text style={styles.cameraBtnText}>Flip</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cameraBtn} onPress={() => {}}>
+              <Text style={styles.cameraBtnText}>Click</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Camera>
+    </View>
+  );
 };
