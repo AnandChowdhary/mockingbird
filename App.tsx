@@ -15,6 +15,8 @@ import "firebase/database";
 import "firebase/storage";
 
 interface CameraParams {
+  active: string;
+  setActive: React.Dispatch<string>;
   flashMode: any;
   setFlashMode: React.Dispatch<any>;
   autofocus: any;
@@ -23,6 +25,8 @@ interface CameraParams {
   setZoom: React.Dispatch<number>;
   focusDepth: number;
   setFocusDepth: React.Dispatch<number>;
+  endpoint: string;
+  setEndpoint: React.Dispatch<string>;
 }
 
 /**
@@ -46,7 +50,7 @@ const storage = firebase.storage();
 const database = firebase.database();
 
 export default function App() {
-  const [active, setActive] = useState("photo");
+  const [active, setActive] = useState("settings");
 
   /**
    * Global app settings
@@ -55,7 +59,10 @@ export default function App() {
   const [autofocus, setAutofocus] = useState(Camera.Constants.AutoFocus.on); // on, off
   const [zoom, setZoom] = useState(0); // 0 to 1
   const [focusDepth, setFocusDepth] = useState(0); // 0 (farthest) to 1 (closest)
+  const [endpoint, setEndpoint] = useState("default");
   const cameraParams = {
+    active,
+    setActive,
     flashMode,
     setFlashMode,
     autofocus,
@@ -63,7 +70,9 @@ export default function App() {
     zoom,
     setZoom,
     focusDepth,
-    setFocusDepth
+    setFocusDepth,
+    endpoint,
+    setEndpoint
   };
 
   return (
@@ -181,7 +190,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   nav: {
-    flexDirection: "row"
+    flexDirection: "row",
+    borderTopWidth: 1,
+    borderTopColor: "#ccc"
   },
   navItem: {
     flex: 1,
@@ -231,9 +242,40 @@ const styles = StyleSheet.create({
     color: "#000",
     margin: 10
   },
-  settingsLink: {},
-  settingsLinkInner: {},
-  settingsLinkText: {}
+  header: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 5,
+    paddingBottom: 10
+  },
+  page: {
+    width: "100%",
+    height: "100%"
+  },
+  headerText: {
+    fontSize: 24
+  },
+  settingsHome: {},
+  settingsLink: {
+    paddingVertical: 15,
+    borderBottomColor: "#eee",
+    borderBottomWidth: 1
+  },
+  settingsLinkIcon: {
+    width: 75,
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  settingsLinkInner: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  settingsLinkText: {
+    fontSize: 18
+  }
 });
 
 /**
@@ -242,6 +284,7 @@ const styles = StyleSheet.create({
  * @param progressCallback
  */
 export const uploadAsFile = async (
+  endpoint: string,
   uri: string,
   progressCallback?: Function
 ) => {
@@ -271,7 +314,10 @@ const SettingsPageHome = ({
   setActive: React.Dispatch<string>;
 }) => {
   return (
-    <View>
+    <View style={{ ...styles.settingsHome, ...styles.page }}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Settings</Text>
+      </View>
       <ScrollView>
         {[
           {
@@ -320,26 +366,28 @@ const SettingsPageHome = ({
               key={item.to}
             >
               <View style={styles.settingsLinkInner}>
-                {item.type === "feather" ? (
-                  <Feather name={item.icon} size={24} />
-                ) : (
-                  <></>
-                )}
-                {item.type === "ionicons" ? (
-                  <Ionicons name={item.icon} size={24} />
-                ) : (
-                  <></>
-                )}
-                {item.type === "entypo" ? (
-                  <Entypo name={item.icon} size={24} />
-                ) : (
-                  <></>
-                )}
-                {item.type === "material" ? (
-                  <MaterialIcons name={item.icon} size={24} />
-                ) : (
-                  <></>
-                )}
+                <View style={styles.settingsLinkIcon}>
+                  {item.type === "feather" ? (
+                    <Feather name={item.icon} size={32} />
+                  ) : (
+                    <></>
+                  )}
+                  {item.type === "ionicons" ? (
+                    <Ionicons name={item.icon} size={32} />
+                  ) : (
+                    <></>
+                  )}
+                  {item.type === "entypo" ? (
+                    <Entypo name={item.icon} size={32} />
+                  ) : (
+                    <></>
+                  )}
+                  {item.type === "material" ? (
+                    <MaterialIcons name={item.icon} size={32} />
+                  ) : (
+                    <></>
+                  )}
+                </View>
                 <Text style={styles.settingsLinkText}>{item.label}</Text>
               </View>
             </TouchableOpacity>
@@ -485,7 +533,7 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
     const image = await camera.takePictureAsync({
       quality: 0.1
     });
-    await uploadAsFile(image.uri);
+    await uploadAsFile(cameraParams.endpoint, image.uri);
   };
 
   if (hasPermission === null) {
@@ -501,6 +549,10 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
         ref={ref => setCamera(ref)}
         style={styles.cameraInner}
         type={type}
+        zoom={cameraParams.zoom}
+        autoFocus={cameraParams.autofocus}
+        flashMode={cameraParams.flashMode}
+        focusDepth={cameraParams.focusDepth}
       >
         <View style={styles.cameraItems}>
           <View style={styles.cameraNav}>
