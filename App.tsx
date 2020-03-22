@@ -13,10 +13,14 @@ export default function App() {
   return (
     <SafeAreaView style={styles.parent}>
       <View style={styles.container}>
-        <Text>Open up App.tsx to start working on your app!</Text>
+        {active === "live" ? <CameraPage /> : <></>}
+        {active === "photo" ? <CameraPage /> : <></>}
+        {active === "subtitles" ? <Text>subtitles</Text> : <></>}
+        {active === "settings" ? <Text>settings</Text> : <></>}
       </View>
       <View style={styles.nav}>
         <TouchableOpacity
+          onPress={() => setActive("live")}
           style={{
             ...styles.navItem,
             ...(active === "live" ? styles.navItemActive : {})
@@ -26,11 +30,11 @@ export default function App() {
             <Ionicons
               name="md-videocam"
               size={32}
-              color={active === "" ? "#3498db" : "#777"}
+              color={active === "live" ? "#3498db" : "#777"}
             />
             <Text
               style={{
-                ...(active === "Textlive" ? styles.navItemActiveText : {})
+                ...(active === "live" ? styles.navItemActiveText : {})
               }}
             >
               Live
@@ -38,6 +42,7 @@ export default function App() {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => setActive("photo")}
           style={{
             ...styles.navItem,
             ...(active === "photo" ? styles.navItemActive : {})
@@ -59,6 +64,7 @@ export default function App() {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => setActive("subtitles")}
           style={{
             ...styles.navItem,
             ...(active === "subtitles" ? styles.navItemActive : {})
@@ -80,6 +86,7 @@ export default function App() {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => setActive("settings")}
           style={{
             ...styles.navItem,
             ...(active === "settings" ? styles.navItemActive : {})
@@ -120,7 +127,6 @@ const styles = StyleSheet.create({
   },
   navItemActive: {},
   navItemActiveText: {
-    fontWeight: "bold",
     color: "#3498db"
   },
   container: {
@@ -130,3 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+const CameraPage = () => {
+  return <Text>Hello Camera</Text>;
+};
