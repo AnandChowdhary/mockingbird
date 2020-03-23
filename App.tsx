@@ -866,7 +866,10 @@ const SettingsPageLanguage = ({
           </Text>
           <Picker
             style={styles.input}
-            onValueChange={text => cameraParams.setLocale(text)}
+            onValueChange={(text: "en" | "nl" | "hi") => {
+              cameraParams.setLocale(text);
+              cameraParams.setI18n(locales[text]);
+            }}
             selectedValue={cameraParams.locale}
           >
             <Picker.Item label="English" value="en" />
@@ -1110,6 +1113,71 @@ const locales = {
         torch: "Always on",
         on: "On to click photo",
         off: "Always off"
+      }
+    }
+  },
+  hi: {
+    live: {
+      title: "लाइव"
+    },
+    photo: {
+      title: "तस्वीर"
+    },
+    subtitles: {
+      title: "उपशीर्षक"
+    },
+    settings: {
+      title: "समायोजन",
+      webApp: {
+        title: "वेब अप्प",
+        linkEndpoint: "लिंक वेबसाइट",
+        guessable:
+          "एक लंबी और अनोखी वेबसाइट चुनना एक अच्छा विचार है जो आसानी से अनुमान लगाने योग्य नहीं है।",
+        linkDetails:
+          "वेब ऐप का उपयोग करने के लिए, अपने डेस्कटॉप वेब ब्राउज़र से $LINK पर जाएं।"
+      },
+      focus: {
+        title: "फोकस",
+        autoFocus: {
+          title: "ऑटो फोकस",
+          on: "चालू",
+          off: "बंद"
+        },
+        focusDepth: {
+          title: "फोकस की गहराई",
+          details:
+            '"0" का अर्थ है अनंत फोकस और "1" का अर्थ है जितना संभव हो उतना करीब।'
+        }
+      },
+      quality: {
+        title: "गुणवत्ता",
+        compression: "दबाव",
+        details:
+          '"0.1" का अर्थ है बहुत कम गुणवत्ता और बहुत उच्च संपीड़न, और "1.0" का अर्थ है कोई संपीड़न और बहुत उच्च गुणवत्ता (लेकिन अधिक डेटा का उपभोग नहीं करता है)',
+        low: "कम गुणवत्ता (कम से कम डेटा)",
+        medium: "मध्यम गुणवत्ता",
+        high: "उच्च गुणवत्ता (सबसे अधिक डेटा)"
+      },
+      interface: {
+        title: "इंटरफेस",
+        screenOn: "स्क्रीन को चालू रखें",
+        always: "हमेशा",
+        camera: "कैमरा",
+        never: "कभी नहीँ",
+        language: "भाषा"
+      },
+      about: {
+        title: "ऐप के बारे में"
+      },
+      zoom: {
+        title: "ज़ूम"
+      },
+      flash: {
+        title: "चमक",
+        auto: "स्वचालित (प्रकाश पर आधारित)",
+        torch: "हमेशा बने रहें",
+        on: "फोटो क्लिक करने के लिए",
+        off: "हमेशा बंद रहें"
       }
     }
   }
