@@ -28,7 +28,6 @@ const loader = new Image();
 db.ref(slug).on("value", snapshot => {
   const value = snapshot.val();
   loader.src = value.url;
-  loader.crossOrigin = "";
   loader.addEventListener("load", () => {
     const img = document.querySelector<HTMLDivElement>(".image");
     if (img) img.style.backgroundImage = `url(${value.url})`;
