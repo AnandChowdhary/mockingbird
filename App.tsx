@@ -450,14 +450,24 @@ const SettingsPageHome = ({
             label: cameraParams.i18n.settings.webApp.title,
             to: "webapp"
           },
-          { icon: "zoom-in", type: "feather", label: "Zoom", to: "zoom" },
+          {
+            icon: "zoom-in",
+            type: "feather",
+            label: cameraParams.i18n.settings.zoom.title,
+            to: "zoom"
+          },
           {
             icon: "center-focus-strong",
             type: "material",
             label: cameraParams.i18n.settings.focus.title,
             to: "focus"
           },
-          { icon: "flashlight", type: "entypo", label: "Flash", to: "flash" },
+          {
+            icon: "flashlight",
+            type: "entypo",
+            label: cameraParams.i18n.settings.flash.title,
+            to: "flash"
+          },
           {
             icon: "subtitles",
             type: "material",
@@ -1135,6 +1145,9 @@ const locales = {
           "एक लंबी और अनोखी वेबसाइट चुनना एक अच्छा विचार है जो आसानी से अनुमान लगाने योग्य नहीं है।",
         linkDetails:
           "वेब ऐप का उपयोग करने के लिए, अपने डेस्कटॉप वेब ब्राउज़र से $LINK पर जाएं।"
+      },
+      subtitles: {
+        title: "उपशीर्षक"
       },
       focus: {
         title: "फोकस",
