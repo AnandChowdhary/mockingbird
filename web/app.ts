@@ -32,3 +32,9 @@ db.ref(slug).on("value", snapshot => {
     if (img) img.style.backgroundImage = `url(${value.url})`;
   });
 });
+
+const historyButton = document.querySelector(".history");
+historyButton.addEventListener("click", () => {
+  const history = document.querySelector(".history-view");
+  if (history) history.classList.toggle("visible");
+});

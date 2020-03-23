@@ -32,3 +32,19 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
 }
+
+.history-view {
+  position: absolute;
+  background-color: #fff;
+  bottom: 7rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25);
+  top: 2rem;
+  right: 2rem;
+  width: 25rem;
+  z-index: 5;
+  display: none;
+  &.visible {
+    display: block;
+  }
+}
