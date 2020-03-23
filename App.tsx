@@ -315,10 +315,15 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 10
   },
+  cameraBtnInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10
+  },
   cameraBtnText: {
-    fontSize: 24,
-    color: "#000",
-    margin: 10
+    fontSize: 18,
+    marginLeft: 5,
+    color: "#000"
   },
   header: {
     borderBottomWidth: 1,
@@ -418,7 +423,7 @@ export const uploadAsFile = async (endpoint: string, uri: string) => {
   const ref = storage.ref().child(`users/${endpoint}/${name}`);
   const task = await ref.put(blob, metadata);
   const url: string = await task.ref.getDownloadURL();
-  await database.ref().update({ image: url });
+  await database.ref(endpoint).update({ url });
   setTimeout(() => {
     storage
       .ref(ref.name)
@@ -1045,10 +1050,25 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
                 );
               }}
             >
-              <Text style={styles.cameraBtnText}>Flip</Text>
+              <View
+                style={styles.cameraBtnInner}
+                accessibilityLabel={cameraParams.i18n.photo.flip}
+              >
+                {cameraParams.type === "back" ||
+                cameraParams.type == Camera.Constants.Type.back ? (
+                  <MaterialIcons name="camera-front" size={32} />
+                ) : (
+                  <MaterialIcons name="camera-rear" size={32} />
+                )}
+              </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cameraBtn} onPress={click}>
-              <Text style={styles.cameraBtnText}>Click</Text>
+              <View style={styles.cameraBtnInner}>
+                <MaterialIcons name="camera" size={32} />
+                <Text style={styles.cameraBtnText}>
+                  {cameraParams.i18n.photo.click}
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -1063,7 +1083,9 @@ const locales = {
       title: "Live"
     },
     photo: {
-      title: "Photo"
+      title: "Photo",
+      flip: "Flip",
+      click: "Click photo"
     },
     subtitles: {
       title: "Subtitles"
@@ -1131,7 +1153,9 @@ const locales = {
       title: "लाइव"
     },
     photo: {
-      title: "तस्वीर"
+      title: "तस्वीर",
+      flip: "फ्लिप",
+      click: "फोटो खींचो"
     },
     subtitles: {
       title: "उपशीर्षक"
