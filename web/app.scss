@@ -6,7 +6,8 @@ body {
     sans-serif;
 }
 
-.history {
+.history,
+.save {
   position: absolute;
   right: 2rem;
   bottom: 2rem;
@@ -19,6 +20,11 @@ body {
   backdrop-filter: blur(1rem);
   border: none;
   z-index: 10;
+}
+
+.save {
+  left: 2rem;
+  right: auto;
 }
 
 .image {
@@ -44,7 +50,48 @@ body {
   width: 25rem;
   z-index: 5;
   display: none;
+  overflow: auto;
+  color: #000;
+  padding: 2rem;
+  box-sizing: border-box;
   &.visible {
     display: block;
+  }
+  h1 {
+    margin-top: 0;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    position: relative;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    a {
+      display: block;
+    }
+    a > div {
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      backdrop-filter: blur(1rem);
+      padding: 0.5rem;
+    }
+  }
+  img {
+    background-color: gray;
+    border: none;
+    display: block;
+    margin-right: 1rem;
+    width: 100%;
+    height: 12.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 }

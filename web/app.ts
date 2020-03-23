@@ -20,21 +20,71 @@ firebase.initializeApp({
 
 // const store = storage();
 const db = firebase.database();
+const storage = firebase.storage();
 
 const slug = window.location.pathname;
+const loader = new Image();
 
 db.ref(slug).on("value", snapshot => {
   const value = snapshot.val();
-  const loader = new Image();
   loader.src = value.url;
+  loader.crossOrigin = "";
   loader.addEventListener("load", () => {
     const img = document.querySelector<HTMLDivElement>(".image");
     if (img) img.style.backgroundImage = `url(${value.url})`;
   });
 });
 
-const historyButton = document.querySelector(".history");
-historyButton.addEventListener("click", () => {
-  const history = document.querySelector(".history-view");
-  if (history) history.classList.toggle("visible");
+const save = document.querySelector(".save");
+save.addEventListener("click", () => {
+  fetch(`https://cors-anywhere.herokuapp.com/${loader.src}`, {
+    headers: {
+      "X-Requested-With": "mockingbird.netlify.com"
+    }
+  })
+    .then(image => image.blob())
+    .then(blob => {
+      const name = `${new Date().getTime()}-upload.jpg`;
+      storage
+        .ref(`users/${slug}/${name}`)
+        .put(blob, { contentType: "image/jpeg" })
+        .then(() => {
+          if (history) history.classList.add("visible");
+          updateHistory();
+        })
+        .catch(() => {});
+    })
+    .catch(() => {});
 });
+
+const historyButton = document.querySelector(".history");
+const history = document.querySelector(".history-view");
+
+historyButton.addEventListener("click", () => {
+  if (history) history.classList.toggle("visible");
+  updateHistory();
+});
+
+const updateHistory = () => {
+  storage
+    .ref()
+    .child(`users/${slug}`)
+    .listAll()
+    .then(files => {
+      console.log("Got files", files.items);
+      let html = "<h1>Files</h1><ul>";
+      files.items.forEach(file => {
+        html += `<li><a href="#" target="_blank">
+          <img alt="">
+          <div>
+            <div class="date">${new Date(
+              parseInt(file.name.split("-")[0])
+            ).toLocaleString()}</div>
+          </div>
+        </a></li>`;
+      });
+      html += "</ul>";
+      if (history) history.innerHTML = html;
+    })
+    .catch(() => {});
+};
