@@ -71,10 +71,23 @@ const updateHistory = () => {
     .child(`users/${slug}`)
     .listAll()
     .then(files => {
-      console.log("Got files", files.items);
       let html = "<h1>Files</h1><ul>";
       files.items.forEach(file => {
-        html += `<li><a href="#" target="_blank">
+        requestAnimationFrame(() => {
+          file
+            .getDownloadURL()
+            .then(url => {
+              const item = document.querySelector(
+                `[data-image="${file.name}"]`
+              );
+              if (item) {
+                item.querySelector("img").setAttribute("src", url);
+                item.querySelector("a").setAttribute("href", url);
+              }
+            })
+            .catch(() => {});
+        });
+        html += `<li data-image="${file.name}"><a href="#" target="_blank">
           <img alt="">
           <div>
             <div class="date">${new Date(
