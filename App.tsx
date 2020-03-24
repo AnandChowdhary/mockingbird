@@ -430,7 +430,7 @@ export const uploadAsFile = async (endpoint: string, uri: string) => {
       .delete()
       .then(() => {})
       .catch(() => {});
-  }, 10000);
+  }, 60000);
 };
 
 const SettingsPageHome = ({
