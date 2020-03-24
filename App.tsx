@@ -9,7 +9,8 @@ import {
   TextInput,
   StatusBar,
   Picker,
-  Slider
+  Slider,
+  AsyncStorage
 } from "react-native";
 import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
@@ -106,6 +107,29 @@ export default function App() {
     setI18n
   };
 
+  let initialized = false;
+  useEffect(() => {
+    AsyncStorage.getItem("settings")
+      .then((result: any) => {
+        if (result) {
+          if (result.flashMode) setFlashMode(result.flashMode);
+          if (result.autofocus) setAutofocus(result.autofocus);
+          if (result.zoom) setZoom(result.zoom);
+          if (result.focusDepth) setFocusDepth(result.focusDepth);
+          if (result.endpoint) setEndpoint(result.endpoint);
+          if (result.locale) {
+            setLocale(result.locale);
+            setI18n(locales[result.locale]);
+          }
+          if (result.screenOn) setScreenOn(result.screenOn);
+          if (result.type) setType(result.type);
+          if (result.quality) setQuality(result.quality);
+        }
+      })
+      .catch(() => {})
+      .then(() => (initialized = true));
+  });
+
   useEffect(() => {
     deactivateKeepAwake();
     if (screenOn === "always") return activateKeepAwake();
@@ -115,6 +139,38 @@ export default function App() {
     )
       return activateKeepAwake();
   }, [screenOn, active]);
+
+  useEffect(() => {
+    if (initialized)
+      AsyncStorage.setItem(
+        "settings",
+        JSON.stringify({
+          flashMode,
+          autofocus,
+          zoom,
+          focusDepth,
+          endpoint,
+          locale,
+          screenOn,
+          type,
+          quality,
+          i18n
+        })
+      )
+        .then(() => {})
+        .catch(() => {});
+  }, [
+    flashMode,
+    autofocus,
+    zoom,
+    focusDepth,
+    endpoint,
+    locale,
+    screenOn,
+    type,
+    quality,
+    i18n
+  ]);
 
   return (
     <SafeAreaView style={styles.parent}>
