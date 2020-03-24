@@ -128,7 +128,7 @@ export default function App() {
       })
       .catch(() => {})
       .then(() => (initialized = true));
-  });
+  }, []);
 
   useEffect(() => {
     deactivateKeepAwake();
