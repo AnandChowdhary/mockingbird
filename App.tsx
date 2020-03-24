@@ -1217,6 +1217,76 @@ const locales = {
         off: "हमेशा बंद रहें"
       }
     }
+  },
+  nl: {
+    live: {
+      title: "Live"
+    },
+    photo: {
+      title: "Foto",
+      flip: "Draai",
+      click: "Maak foto"
+    },
+    subtitles: {
+      title: "Ondertiteling"
+    },
+    settings: {
+      title: "Instellingen",
+      webApp: {
+        title: "Web App",
+        linkEndpoint: "Link endpoint",
+        guessable:
+          "Het is het beste om een lange en unieke endpoint te kiezen die niet makkelijk te raden is.",
+        linkDetails:
+          "Om de app te gebruiken, ga naar $LINK van je desktop web browser."
+      },
+      focus: {
+        title: "Focus",
+        autoFocus: {
+          title: "Auto focus",
+          on: "aan",
+          off: "uit"
+        },
+        focusDepth: {
+          title: "Focus diepte",
+          details:
+            '"0" betekent oneindige focus en "1" betekent focus zo dichtbij mogelijk.'
+        }
+      },
+      subtitles: {
+        title: "Ondertiteling"
+      },
+      quality: {
+        title: "Kwaliteit",
+        compression: "Compressie",
+        details:
+          '"0.1" betektn lage kwaliteit met veel compressie en "1.0" betekent geen compressie met hoge kwaliteit (maar dit gebruikt meer data) ',
+        low: "Lage kwaliteit (minste data)",
+        medium: "Medium kwaliteit",
+        high: "Hoge kwaliteit (meeste data)"
+      },
+      interface: {
+        title: "Interface",
+        screenOn: "Houd scherm aan",
+        always: "Altijd",
+        camera: "Camera",
+        never: "Nooit",
+        language: "Taal"
+      },
+      about: {
+        title: "Over"
+      },
+      zoom: {
+        title: "Zoom"
+      },
+      flash: {
+        title: "Flits",
+        auto: "Auto (afhankelijk van lichtsituatie)",
+        torch: "Altijd aan",
+        on: "Aan bij het nemen van een foto",
+        off: "Altijd uit"
+      }
+    }
   }
 };
 
