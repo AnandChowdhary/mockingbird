@@ -27,6 +27,7 @@ const loader = new Image();
 
 db.ref(slug).on("value", snapshot => {
   const value = snapshot.val();
+  if (!value) return;
   loader.src = value.url;
   loader.addEventListener("load", () => {
     const img = document.querySelector<HTMLDivElement>(".image");
