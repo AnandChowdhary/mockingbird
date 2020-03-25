@@ -161,6 +161,7 @@ export default function App() {
           if (result.zoom) setZoom(result.zoom);
           if (result.focusDepth) setFocusDepth(result.focusDepth);
           if (result.endpoint) setEndpoint(result.endpoint);
+          if (result.theme) setTheme(result.theme);
           if (result.locale) {
             setLocale(result.locale);
             setI18n(locales[result.locale]);
@@ -198,7 +199,8 @@ export default function App() {
           screenOn,
           type,
           quality,
-          i18n
+          i18n,
+          theme
         })
       )
         .then(() => {})
@@ -213,7 +215,8 @@ export default function App() {
     screenOn,
     type,
     quality,
-    i18n
+    i18n,
+    theme
   ]);
 
   return (
