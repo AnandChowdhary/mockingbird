@@ -67,7 +67,7 @@ const storage = firebase.storage();
 const database = firebase.database();
 
 export default function App() {
-  const [active, setActive] = useState("photo");
+  const [active, setActive] = useState("settings");
 
   /**
    * Global app settings
@@ -173,149 +173,168 @@ export default function App() {
   ]);
 
   return (
-    <SafeAreaView style={styles.parent}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.container}>
-        {active === "live" ? <CameraPage cameraParams={cameraParams} /> : <></>}
-        {active === "photo" ? (
-          <CameraPage cameraParams={cameraParams} />
-        ) : (
-          <></>
-        )}
-        {active === "subtitles" ? <Text>subtitles</Text> : <></>}
-        {[
-          "settings",
-          "settings-webapp",
-          "settings-zoom",
-          "settings-focus",
-          "settings-flash",
-          "settings-subtitles",
-          "settings-quality",
-          "settings-language",
-          "settings-about"
-        ].includes(active) ? (
-          <SettingsPage cameraParams={cameraParams} />
-        ) : (
-          <></>
-        )}
-      </View>
-      <View style={styles.nav}>
-        <TouchableOpacity
-          onPress={() => setActive("live")}
-          style={{
-            ...styles.navItem,
-            ...(active === "live" ? styles.navItemActive : {})
-          }}
-        >
-          <View style={styles.navItemInner}>
-            <Ionicons
-              name="md-videocam"
-              size={32}
-              color={active === "live" ? "#3498db" : "#777"}
-            />
-            <Text
-              style={{
-                ...(active === "live" ? styles.navItemActiveText : {})
-              }}
-            >
-              {i18n.live.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActive("photo")}
-          style={{
-            ...styles.navItem,
-            ...(active === "photo" ? styles.navItemActive : {})
-          }}
-        >
-          <View style={styles.navItemInner}>
-            <Ionicons
-              name="md-camera"
-              size={32}
-              color={active === "photo" ? "#3498db" : "#777"}
-            />
-            <Text
-              style={{
-                ...(active === "photo" ? styles.navItemActiveText : {})
-              }}
-            >
-              {i18n.photo.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActive("subtitles")}
-          style={{
-            ...styles.navItem,
-            ...(active === "subtitles" ? styles.navItemActive : {})
-          }}
-        >
-          <View style={styles.navItemInner}>
-            <MaterialIcons
-              name="subtitles"
-              size={32}
-              color={active === "subtitles" ? "#3498db" : "#777"}
-            />
-            <Text
-              style={{
-                ...(active === "subtitles" ? styles.navItemActiveText : {})
-              }}
-            >
-              {i18n.subtitles.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActive("settings")}
-          style={{
-            ...styles.navItem,
-            ...(active === "settings" ? styles.navItemActive : {})
-          }}
-        >
-          <View style={styles.navItemInner}>
-            <Ionicons
-              name="md-cog"
-              size={32}
-              color={
-                [
-                  "settings",
-                  "settings-webapp",
-                  "settings-zoom",
-                  "settings-focus",
-                  "settings-flash",
-                  "settings-subtitles",
-                  "settings-quality",
-                  "settings-language",
-                  "settings-about"
-                ].includes(active)
-                  ? "#3498db"
-                  : "#777"
-              }
-            />
-            <Text
-              style={{
-                ...([
-                  "settings",
-                  "settings-webapp",
-                  "settings-zoom",
-                  "settings-focus",
-                  "settings-flash",
-                  "settings-subtitles",
-                  "settings-quality",
-                  "settings-language",
-                  "settings-about"
-                ].includes(active)
-                  ? styles.navItemActiveText
-                  : {})
-              }}
-            >
-              {i18n.settings.title}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#6818e6" }} />
+      <SafeAreaView style={styles.parent}>
+        <StatusBar barStyle="light-content" />
+        <View style={styles.container}>
+          {active === "live" ? (
+            <CameraPage cameraParams={cameraParams} />
+          ) : (
+            <></>
+          )}
+          {active === "photo" ? (
+            <CameraPage cameraParams={cameraParams} />
+          ) : (
+            <></>
+          )}
+          {active === "subtitles" ? <Text>subtitles</Text> : <></>}
+          {[
+            "settings",
+            "settings-webapp",
+            "settings-zoom",
+            "settings-focus",
+            "settings-flash",
+            "settings-subtitles",
+            "settings-quality",
+            "settings-language",
+            "settings-about"
+          ].includes(active) ? (
+            <SettingsPage cameraParams={cameraParams} />
+          ) : (
+            <></>
+          )}
+        </View>
+        <View style={styles.nav}>
+          <TouchableOpacity
+            onPress={() => setActive("live")}
+            style={{
+              ...styles.navItem,
+              ...(active === "live" ? styles.navItemActive : {})
+            }}
+          >
+            <View style={styles.navItemInner}>
+              <Ionicons
+                name="md-videocam"
+                size={32}
+                color={active === "live" ? "#6818e6" : "#777"}
+              />
+              <Text
+                style={{
+                  ...(active === "live" ? styles.navItemActiveText : {})
+                }}
+              >
+                {i18n.live.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setActive("photo")}
+            style={{
+              ...styles.navItem,
+              ...(active === "photo" ? styles.navItemActive : {})
+            }}
+          >
+            <View style={styles.navItemInner}>
+              <Ionicons
+                name="md-camera"
+                size={32}
+                color={active === "photo" ? "#6818e6" : "#777"}
+              />
+              <Text
+                style={{
+                  ...(active === "photo" ? styles.navItemActiveText : {})
+                }}
+              >
+                {i18n.photo.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setActive("subtitles")}
+            style={{
+              ...styles.navItem,
+              ...(active === "subtitles" ? styles.navItemActive : {})
+            }}
+          >
+            <View style={styles.navItemInner}>
+              <MaterialIcons
+                name="subtitles"
+                size={32}
+                color={active === "subtitles" ? "#6818e6" : "#777"}
+              />
+              <Text
+                style={{
+                  ...(active === "subtitles" ? styles.navItemActiveText : {})
+                }}
+              >
+                {i18n.subtitles.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setActive("settings")}
+            style={{
+              ...styles.navItem,
+              ...([
+                "settings",
+                "settings-webapp",
+                "settings-zoom",
+                "settings-focus",
+                "settings-flash",
+                "settings-subtitles",
+                "settings-quality",
+                "settings-language",
+                "settings-about"
+              ].includes(active)
+                ? styles.navItemActive
+                : {})
+            }}
+          >
+            <View style={styles.navItemInner}>
+              <Ionicons
+                name="md-cog"
+                size={32}
+                color={
+                  [
+                    "settings",
+                    "settings-webapp",
+                    "settings-zoom",
+                    "settings-focus",
+                    "settings-flash",
+                    "settings-subtitles",
+                    "settings-quality",
+                    "settings-language",
+                    "settings-about"
+                  ].includes(active)
+                    ? "#6818e6"
+                    : "#777"
+                }
+              />
+              <Text
+                style={{
+                  ...([
+                    "settings",
+                    "settings-webapp",
+                    "settings-zoom",
+                    "settings-focus",
+                    "settings-flash",
+                    "settings-subtitles",
+                    "settings-quality",
+                    "settings-language",
+                    "settings-about"
+                  ].includes(active)
+                    ? styles.navItemActiveText
+                    : {})
+                }}
+              >
+                {i18n.settings.title}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -325,23 +344,30 @@ const styles = StyleSheet.create({
   },
   nav: {
     flexDirection: "row",
+    borderTopColor: "#eee",
     borderTopWidth: 1,
-    borderTopColor: "#ccc"
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 10
   },
   navItem: {
     flex: 1,
-    paddingTop: 10
+    paddingVertical: 5,
+    borderRadius: 10
   },
   navItemInner: {
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "flex-end"
   },
-  navItemActive: {},
+  navItemActive: {
+    backgroundColor: "#efe8fa"
+  },
   navItemActiveText: {
-    color: "#3498db"
+    color: "#6818e6"
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#eee",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -366,10 +392,20 @@ const styles = StyleSheet.create({
   },
   cameraBtn: {
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
     paddingHorizontal: 10,
     borderRadius: 25,
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowRadius: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.1
+  },
+  cameraBtnSquare: {
+    paddingHorizontal: 5
   },
   cameraBtnInner: {
     flexDirection: "row",
@@ -377,18 +413,17 @@ const styles = StyleSheet.create({
     padding: 10
   },
   cameraBtnText: {
-    fontSize: 18,
+    fontSize: 22,
     marginLeft: 5,
     color: "#000"
   },
   header: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 10,
-    paddingBottom: 15
+    paddingBottom: 15,
+    backgroundColor: "#6818e6",
+    paddingTop: 25,
+    paddingHorizontal: 25
   },
   page: {
     width: "100%",
@@ -398,25 +433,49 @@ const styles = StyleSheet.create({
     padding: 25
   },
   headerText: {
-    fontSize: 28,
-    fontWeight: "bold"
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#fff"
+  },
+  viewBackground: {
+    position: "absolute",
+    width: "100%",
+    height: "25%",
+    backgroundColor: "#6818e6",
+    zIndex: -1,
+    top: 0,
+    left: 0,
+    right: 0
+  },
+  settingsLinks: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: 20
   },
   settingsLink: {
-    paddingVertical: 15,
-    borderBottomColor: "#eee",
-    borderBottomWidth: 1
+    paddingVertical: 12.5,
+    width: "47%",
+    backgroundColor: "#fff",
+    marginBottom: 20,
+    borderRadius: 5,
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowRadius: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.1
   },
   settingsLinkIcon: {
-    width: 85,
-    flexDirection: "row",
-    justifyContent: "center"
+    marginBottom: 5
   },
   settingsLinkInner: {
-    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center"
   },
   settingsLinkText: {
-    fontSize: 24
+    fontSize: 26
   },
   inputGroup: {},
   label: {
@@ -428,7 +487,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5,
+    backgroundColor: "#fff"
   },
   slider: {},
   buttons: {
@@ -438,13 +498,20 @@ const styles = StyleSheet.create({
     flexWrap: "wrap"
   },
   button: {
-    backgroundColor: "#eee",
+    backgroundColor: "#fff",
     width: "30%",
     height: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    marginBottom: 15
+    marginBottom: 15,
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowRadius: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.1
   },
   buttonFull: {
     width: "100%"
@@ -503,7 +570,8 @@ const SettingsPageHome = ({
           {cameraParams.i18n.settings.title}
         </Text>
       </View>
-      <ScrollView>
+      <View style={styles.viewBackground}></View>
+      <ScrollView contentContainerStyle={styles.settingsLinks}>
         {[
           {
             icon: "md-lock",
@@ -567,22 +635,22 @@ const SettingsPageHome = ({
               <View style={styles.settingsLinkInner}>
                 <View style={styles.settingsLinkIcon}>
                   {item.type === "feather" ? (
-                    <Feather name={item.icon} size={36} />
+                    <Feather name={item.icon} size={48} color="#371270" />
                   ) : (
                     <></>
                   )}
                   {item.type === "ionicons" ? (
-                    <Ionicons name={item.icon} size={36} />
+                    <Ionicons name={item.icon} size={48} color="#371270" />
                   ) : (
                     <></>
                   )}
                   {item.type === "entypo" ? (
-                    <Entypo name={item.icon} size={36} />
+                    <Entypo name={item.icon} size={48} color="#371270" />
                   ) : (
                     <></>
                   )}
                   {item.type === "material" ? (
-                    <MaterialIcons name={item.icon} size={36} />
+                    <MaterialIcons name={item.icon} size={48} color="#371270" />
                   ) : (
                     <></>
                   )}
@@ -813,7 +881,9 @@ const SettingsPageSubtitles = ({
   return (
     <View style={styles.page}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Subtitles</Text>
+        <Text style={styles.headerText}>
+          {cameraParams.i18n.settings.subtitles.title}
+        </Text>
       </View>
       <ScrollView style={styles.pagePadded}></ScrollView>
     </View>
@@ -1096,7 +1166,7 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
         <View style={styles.cameraItems}>
           <View style={styles.cameraNav}>
             <TouchableOpacity
-              style={styles.cameraBtn}
+              style={{ ...styles.cameraBtn, ...styles.cameraBtnSquare }}
               onPress={() => {
                 cameraParams.setType(
                   cameraParams.type === "back" ||
@@ -1112,15 +1182,19 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
               >
                 {cameraParams.type === "back" ||
                 cameraParams.type == Camera.Constants.Type.back ? (
-                  <MaterialIcons name="camera-front" size={32} />
+                  <MaterialIcons
+                    name="camera-front"
+                    size={32}
+                    color="#371270"
+                  />
                 ) : (
-                  <MaterialIcons name="camera-rear" size={32} />
+                  <MaterialIcons name="camera-rear" size={32} color="#371270" />
                 )}
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cameraBtn} onPress={click}>
               <View style={styles.cameraBtnInner}>
-                <MaterialIcons name="camera" size={32} />
+                <MaterialIcons name="camera" size={32} color="#371270" />
                 <Text style={styles.cameraBtnText}>
                   {cameraParams.i18n.photo.click}
                 </Text>
