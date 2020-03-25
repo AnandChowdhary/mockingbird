@@ -44,6 +44,8 @@ interface CameraParams {
   setType: React.Dispatch<string>;
   i18n: LocalesType;
   setI18n: React.Dispatch<LocalesType>;
+  theme: ThemesType;
+  setTheme: React.Dispatch<ThemesType>;
 }
 
 /**
@@ -66,8 +68,47 @@ try {
 const storage = firebase.storage();
 const database = firebase.database();
 
+const themes = {
+  purple: {
+    primary: "#6818e6",
+    dark: "#371270",
+    light: "#efe8fa"
+  },
+  red: {
+    primary: "#f44336",
+    dark: "#660a0a",
+    light: "#ffebee"
+  },
+  blue: {
+    primary: "#2196f3",
+    dark: "#080d40",
+    light: "#e3f2fd"
+  },
+  teal: {
+    primary: "#009688",
+    dark: "#013b31",
+    light: "#e0f2f1"
+  },
+  green: {
+    primary: "#4caf50",
+    dark: "#022e06",
+    light: "#e8f5e9"
+  },
+  brown: {
+    primary: "#795548",
+    dark: "#2b120d",
+    light: "#efebe9"
+  },
+  pink: {
+    primary: "#e91e63",
+    dark: "#300217",
+    light: "#fce4ec"
+  }
+};
+type ThemesType = typeof themes.purple;
+
 export default function App() {
-  const [active, setActive] = useState("settings");
+  const [active, setActive] = useState("settings-language");
 
   /**
    * Global app settings
@@ -82,6 +123,7 @@ export default function App() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [quality, setQuality] = useState(0.5);
   const [i18n, setI18n] = useState(locales.en);
+  const [theme, setTheme] = useState(themes.purple);
   const cameraParams = {
     active,
     setActive,
@@ -104,7 +146,9 @@ export default function App() {
     type,
     setType,
     i18n,
-    setI18n
+    setI18n,
+    theme,
+    setTheme
   };
 
   let initialized = false;
@@ -174,7 +218,7 @@ export default function App() {
 
   return (
     <>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#6818e6" }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: theme.primary }} />
       <SafeAreaView style={styles.parent}>
         <StatusBar barStyle="light-content" />
         <View style={styles.container}>
@@ -210,18 +254,20 @@ export default function App() {
             onPress={() => setActive("live")}
             style={{
               ...styles.navItem,
-              ...(active === "live" ? styles.navItemActive : {})
+              ...(active === "live" ? { backgroundColor: theme.light } : {})
             }}
           >
             <View style={styles.navItemInner}>
               <Ionicons
                 name="md-videocam"
                 size={32}
-                color={active === "live" ? "#6818e6" : "#777"}
+                color={active === "live" ? cameraParams.theme.primary : "#777"}
               />
               <Text
                 style={{
-                  ...(active === "live" ? styles.navItemActiveText : {})
+                  ...(active === "live"
+                    ? { color: cameraParams.theme.primary }
+                    : {})
                 }}
               >
                 {i18n.live.title}
@@ -232,18 +278,20 @@ export default function App() {
             onPress={() => setActive("photo")}
             style={{
               ...styles.navItem,
-              ...(active === "photo" ? styles.navItemActive : {})
+              ...(active === "photo" ? { backgroundColor: theme.light } : {})
             }}
           >
             <View style={styles.navItemInner}>
               <Ionicons
                 name="md-camera"
                 size={32}
-                color={active === "photo" ? "#6818e6" : "#777"}
+                color={active === "photo" ? cameraParams.theme.primary : "#777"}
               />
               <Text
                 style={{
-                  ...(active === "photo" ? styles.navItemActiveText : {})
+                  ...(active === "photo"
+                    ? { color: cameraParams.theme.primary }
+                    : {})
                 }}
               >
                 {i18n.photo.title}
@@ -254,18 +302,24 @@ export default function App() {
             onPress={() => setActive("subtitles")}
             style={{
               ...styles.navItem,
-              ...(active === "subtitles" ? styles.navItemActive : {})
+              ...(active === "subtitles"
+                ? { backgroundColor: theme.light }
+                : {})
             }}
           >
             <View style={styles.navItemInner}>
               <MaterialIcons
                 name="subtitles"
                 size={32}
-                color={active === "subtitles" ? "#6818e6" : "#777"}
+                color={
+                  active === "subtitles" ? cameraParams.theme.primary : "#777"
+                }
               />
               <Text
                 style={{
-                  ...(active === "subtitles" ? styles.navItemActiveText : {})
+                  ...(active === "subtitles"
+                    ? { color: cameraParams.theme.primary }
+                    : {})
                 }}
               >
                 {i18n.subtitles.title}
@@ -287,7 +341,7 @@ export default function App() {
                 "settings-language",
                 "settings-about"
               ].includes(active)
-                ? styles.navItemActive
+                ? { backgroundColor: theme.light }
                 : {})
             }}
           >
@@ -307,7 +361,7 @@ export default function App() {
                     "settings-language",
                     "settings-about"
                   ].includes(active)
-                    ? "#6818e6"
+                    ? cameraParams.theme.primary
                     : "#777"
                 }
               />
@@ -324,7 +378,7 @@ export default function App() {
                     "settings-language",
                     "settings-about"
                   ].includes(active)
-                    ? styles.navItemActiveText
+                    ? { color: cameraParams.theme.primary }
                     : {})
                 }}
               >
@@ -358,12 +412,6 @@ const styles = StyleSheet.create({
   navItemInner: {
     alignItems: "center",
     justifyContent: "flex-end"
-  },
-  navItemActive: {
-    backgroundColor: "#efe8fa"
-  },
-  navItemActiveText: {
-    color: "#6818e6"
   },
   container: {
     flex: 1,
@@ -421,7 +469,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingBottom: 15,
-    backgroundColor: "#6818e6",
     paddingTop: 25,
     paddingHorizontal: 25
   },
@@ -441,7 +488,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     height: "25%",
-    backgroundColor: "#6818e6",
     zIndex: -1,
     top: 0,
     left: 0,
@@ -565,12 +611,22 @@ const SettingsPageHome = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.title}
         </Text>
       </View>
-      <View style={styles.viewBackground}></View>
+      <View
+        style={{
+          ...styles.viewBackground,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      ></View>
       <ScrollView contentContainerStyle={styles.settingsLinks}>
         {[
           {
@@ -635,22 +691,38 @@ const SettingsPageHome = ({
               <View style={styles.settingsLinkInner}>
                 <View style={styles.settingsLinkIcon}>
                   {item.type === "feather" ? (
-                    <Feather name={item.icon} size={48} color="#371270" />
+                    <Feather
+                      name={item.icon}
+                      size={48}
+                      color={cameraParams.theme.dark}
+                    />
                   ) : (
                     <></>
                   )}
                   {item.type === "ionicons" ? (
-                    <Ionicons name={item.icon} size={48} color="#371270" />
+                    <Ionicons
+                      name={item.icon}
+                      size={48}
+                      color={cameraParams.theme.dark}
+                    />
                   ) : (
                     <></>
                   )}
                   {item.type === "entypo" ? (
-                    <Entypo name={item.icon} size={48} color="#371270" />
+                    <Entypo
+                      name={item.icon}
+                      size={48}
+                      color={cameraParams.theme.dark}
+                    />
                   ) : (
                     <></>
                   )}
                   {item.type === "material" ? (
-                    <MaterialIcons name={item.icon} size={48} color="#371270" />
+                    <MaterialIcons
+                      name={item.icon}
+                      size={48}
+                      color={cameraParams.theme.dark}
+                    />
                   ) : (
                     <></>
                   )}
@@ -674,7 +746,12 @@ const SettingsPageWebapp = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.webApp.title}
         </Text>
@@ -713,7 +790,12 @@ const SettingsPageFlash = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.flash.title}
         </Text>
@@ -809,7 +891,12 @@ const SettingsPageFocus = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.focus.title}
         </Text>
@@ -880,7 +967,12 @@ const SettingsPageSubtitles = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.subtitles.title}
         </Text>
@@ -899,7 +991,12 @@ const SettingsPageQuality = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.quality.title}
         </Text>
@@ -959,7 +1056,12 @@ const SettingsPageLanguage = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.interface.title}
         </Text>
@@ -1018,6 +1120,36 @@ const SettingsPageLanguage = ({
             <Picker.Item label="Hindi" value="hi" />
           </Picker>
         </View>
+        <View style={{ ...styles.inputGroup, marginVertical: 25 }}>
+          <Text style={styles.label}>
+            {cameraParams.i18n.settings.interface.theme}
+          </Text>
+          <View style={{ ...styles.buttons, marginTop: 0 }}>
+            {Object.keys(themes).map((item: string) => {
+              return (
+                <TouchableOpacity
+                  key={`zoom_${item}`}
+                  style={{
+                    ...styles.button
+                  }}
+                  onPress={() => cameraParams.setTheme(themes[item])}
+                >
+                  <Text
+                    style={{
+                      ...styles.buttonText,
+                      fontSize: 18,
+                      color: themes[item].primary,
+                      fontWeight: "bold",
+                      textTransform: "capitalize"
+                    }}
+                  >
+                    {cameraParams.i18n.settings.interface.themes[item]}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -1032,7 +1164,12 @@ const SettingsPageZoom = ({
 }) => {
   return (
     <View style={styles.page}>
-      <View style={styles.header}>
+      <View
+        style={{
+          ...styles.header,
+          backgroundColor: cameraParams.theme.primary
+        }}
+      >
         <Text style={styles.headerText}>
           {cameraParams.i18n.settings.zoom.title}
         </Text>
@@ -1185,16 +1322,24 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
                   <MaterialIcons
                     name="camera-front"
                     size={32}
-                    color="#371270"
+                    color={cameraParams.theme.dark}
                   />
                 ) : (
-                  <MaterialIcons name="camera-rear" size={32} color="#371270" />
+                  <MaterialIcons
+                    name="camera-rear"
+                    size={32}
+                    color={cameraParams.theme.dark}
+                  />
                 )}
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cameraBtn} onPress={click}>
               <View style={styles.cameraBtnInner}>
-                <MaterialIcons name="camera" size={32} color="#371270" />
+                <MaterialIcons
+                  name="camera"
+                  size={32}
+                  color={cameraParams.theme.dark}
+                />
                 <Text style={styles.cameraBtnText}>
                   {cameraParams.i18n.photo.click}
                 </Text>
@@ -1257,6 +1402,16 @@ const locales = {
       },
       interface: {
         title: "Interface",
+        theme: "Theme",
+        themes: {
+          purple: "Purple",
+          red: "Red",
+          blue: "Blue",
+          teal: "Teal",
+          green: "Green",
+          brown: "Brown",
+          pink: "Pink"
+        },
         screenOn: "Keep screen on",
         always: "Always",
         camera: "Camera",
@@ -1327,6 +1482,16 @@ const locales = {
       },
       interface: {
         title: "इंटरफेस",
+        theme: "विषय",
+        themes: {
+          purple: "बैंगनी",
+          red: "लाल",
+          blue: "नीला",
+          teal: "टील",
+          green: "हरा",
+          brown: "भूरा",
+          pink: "गुलाबी"
+        },
         screenOn: "स्क्रीन को चालू रखें",
         always: "हमेशा",
         camera: "कैमरा",
@@ -1397,6 +1562,16 @@ const locales = {
       },
       interface: {
         title: "Interface",
+        theme: "Thema",
+        themes: {
+          purple: "Purper",
+          red: "Rood",
+          blue: "Blauw",
+          teal: "Groenblauw",
+          green: "Groen",
+          brown: "Bruin",
+          pink: "Roze"
+        },
         screenOn: "Houd scherm aan",
         always: "Altijd",
         camera: "Camera",
