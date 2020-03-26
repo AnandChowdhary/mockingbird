@@ -16,28 +16,6 @@ import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import * as WebBrowser from "expo-web-browser";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
-import Constants from "expo-constants";
-
-const track = (data: any) => {
-  fetch(
-    "https://platform.oswaldlabs.com/v1/agastya/collect/gdpr-anonymous-tracker",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        v: "4.17.2",
-        u: "http://localhost:1234/",
-        r: "http://localhost:1234/",
-        y: "Mockingbird",
-        g: "en",
-        c: "4172",
-        b: "https://agastya-version.oswaldlabs.com",
-        x: "gdpr-anonymous-tracker",
-        a: "custom",
-        e: { app: "mockingbird", platform: "web", slug: "", action: "history" }
-      })
-    }
-  );
-};
 
 import * as firebase from "firebase/app";
 import "firebase/database";
