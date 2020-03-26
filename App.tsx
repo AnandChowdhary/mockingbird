@@ -16,6 +16,8 @@ import { Ionicons, MaterialIcons, Feather, Entypo } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import * as WebBrowser from "expo-web-browser";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
+import { Analytics, Event, PageHit } from "expo-analytics";
+const analytics = new Analytics("UA-106998524-1");
 
 import * as firebase from "firebase/app";
 import "firebase/database";
@@ -107,8 +109,15 @@ const themes = {
 };
 type ThemesType = typeof themes.purple;
 
+const track = (key: string, value: any) => {
+  analytics
+    .event(new Event(key, JSON.stringify(value)))
+    .then(() => {})
+    .catch(() => {});
+};
+
 export default function App() {
-  const [active, setActive] = useState("settings-language");
+  const [active, setActive] = useState("photo");
 
   /**
    * Global app settings
@@ -124,6 +133,24 @@ export default function App() {
   const [quality, setQuality] = useState(0.5);
   const [i18n, setI18n] = useState(locales.en);
   const [theme, setTheme] = useState(themes.purple);
+  useEffect(() => {
+    analytics
+      .event(new PageHit(active))
+      .then(() => {})
+      .catch(() => {});
+  }, [active]);
+  useEffect(() => track("flashMode", flashMode), [flashMode]);
+  useEffect(() => track("autofocus", autofocus), [autofocus]);
+  useEffect(() => track("zoom", zoom), [zoom]);
+  useEffect(() => track("focusDepth", focusDepth), [focusDepth]);
+  useEffect(() => track("endpoint", endpoint), [endpoint]);
+  useEffect(() => track("locale", locale), [locale]);
+  useEffect(() => track("screenOn", screenOn), [screenOn]);
+  useEffect(() => track("type", type), [type]);
+  useEffect(() => track("quality", quality), [quality]);
+  useEffect(() => track("i18n", i18n), [i18n]);
+  useEffect(() => track("theme", theme), [theme]);
+
   const cameraParams = {
     active,
     setActive,
