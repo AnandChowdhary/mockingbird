@@ -4,12 +4,7 @@ import "firebase/storage";
 
 const track = (data: any) => {
   try {
-    (window as any).agastya.secureTrack({
-      app: "mockingbird",
-      platform: "web",
-      slug: window.location.pathname.replace("/", ""),
-      ...data
-    });
+    (window as any).gtag(data.action, data.event);
   } catch (error) {}
 };
 

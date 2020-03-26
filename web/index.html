@@ -11,9 +11,16 @@
     <button class="history">History</button>
     <script src="app.ts"></script>
     <script
-      src="https://platform.oswaldlabs.com/v1/agastya/load/gdpr-anonymous-tracker.js"
       async
-      defer
+      src="https://www.googletagmanager.com/gtag/js?id=UA-106998524-1"
     ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-106998524-1");
+    </script>
   </body>
 </html>
