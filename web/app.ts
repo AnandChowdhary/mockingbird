@@ -2,6 +2,17 @@ import * as firebase from "firebase/app";
 import "firebase/database";
 import "firebase/storage";
 
+const track = (data: any) => {
+  try {
+    (window as any).agastya.secureTrack({
+      app: "mockingbird",
+      platform: "web",
+      slug: window.location.pathname.replace("/", ""),
+      ...data
+    });
+  } catch (error) {}
+};
+
 /**
  * This is the public web API key (you can see this)
  * This is NOT the Firebase admin API key
@@ -32,11 +43,16 @@ db.ref(slug).on("value", snapshot => {
   loader.addEventListener("load", () => {
     const img = document.querySelector<HTMLDivElement>(".image");
     if (img) img.style.backgroundImage = `url(${value.url})`;
+    track({
+      action: "update-image",
+      event: value.url
+    });
   });
 });
 
 const save = document.querySelector(".save");
 save.addEventListener("click", () => {
+  track({ action: "save" });
   fetch(`https://cors-anywhere.herokuapp.com/${loader.src}`, {
     headers: {
       "X-Requested-With": "mockingbird.netlify.com"
@@ -61,6 +77,7 @@ const historyButton = document.querySelector(".history");
 const history = document.querySelector(".history-view");
 
 historyButton.addEventListener("click", () => {
+  track({ action: "history" });
   if (history) history.classList.toggle("visible");
   updateHistory();
 });
