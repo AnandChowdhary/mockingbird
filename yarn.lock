@@ -948,17 +948,17 @@
     pouchdb-collections "^1.0.1"
     tiny-queue "^0.2.1"
 
-"@firebase/analytics-types@0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@firebase/analytics-types/-/analytics-types-0.2.8.tgz#f451b2a30f6c73af7e4c59a80e9bdc059d2486eb"
-  integrity sha512-7djG+mVLubSFy5ZEf8Gyn7XzrsLvpXCRj+vj6ta3KtwF2iCsOG4HvGv1TiU+sNwR017cAm2F0qmaAMac90Qq0g==
+"@firebase/analytics-types@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@firebase/analytics-types/-/analytics-types-0.3.0.tgz#33c3f695313b561d48d18d663a20f20362d3ee7c"
+  integrity sha512-0AJ6xn53Qn0D/YOVHHvlWFfnzzRSdd98Lr8Oqe1PJ2HPIN+o7qf03YmOG7fLpR1uplcWd+7vGKmxUrN3jKUBwg==
 
-"@firebase/analytics@0.2.18":
-  version "0.2.18"
-  resolved "https://registry.yarnpkg.com/@firebase/analytics/-/analytics-0.2.18.tgz#c6b8b3c5684237b0d8b08a8047cb18e18a671a54"
-  integrity sha512-sw8TO7YYRnrcqQGYWjWHw6PTNpwWPSZzMaFgLp5oJKsKM7CoOz5K/fxEIfZIF36Zzf0Xky3oU8msek/Zjc5Phg==
+"@firebase/analytics@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@firebase/analytics/-/analytics-0.3.0.tgz#943e73e792ba3f282df4d47aff5a1603b93b37a5"
+  integrity sha512-EEHuK+OcWH6UxufRLVU3lAJ4rmm7aVHmcgkhE9ZQJQy5c+w7QTLvVpGqtrpqD+cYyIBJkFBKJB8NziVyqKwQHw==
   dependencies:
-    "@firebase/analytics-types" "0.2.8"
+    "@firebase/analytics-types" "0.3.0"
     "@firebase/component" "0.1.8"
     "@firebase/installations" "0.4.6"
     "@firebase/logger" "0.2.0"
@@ -1033,10 +1033,10 @@
   resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-1.10.1.tgz#bf018f9c495f470592de745389474dc1c2960d3f"
   integrity sha512-vyKdm+AYUFT8XeUX62IOqaqPFCs/mAMoSEsqIz9HnSVsqCw/IocNjtjSa+3M80kRw4V8fI7JI+Xz6Wg5VJXLqA==
 
-"@firebase/firestore@1.12.2":
-  version "1.12.2"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-1.12.2.tgz#2688c9ef726eed8078bd92414c00b052ae167e03"
-  integrity sha512-Obv+jqyAvYEBZHXSQs5EI0q5R8wylVz/GHHMWtkxAWpXvZjpTYZuKcvxJ9Ugi9SwhgvxbdmmnrI/4FwjQjYi7Q==
+"@firebase/firestore@1.13.0":
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-1.13.0.tgz#2638f25b2a3d19cb891a6b334a0dc14aefef5a34"
+  integrity sha512-GctO+sxLqOnY8SkBN5Z5p1nUYRX+yWSc9Kcx9nIPbUZ0WqBM5BaSlBHZHTFtjmJxS+0j/Y8Mu7c6qm6q5rVnjA==
   dependencies:
     "@firebase/component" "0.1.8"
     "@firebase/firestore-types" "1.10.1"
@@ -1566,10 +1566,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@~16.9.25":
+"@types/react@*":
   version "16.9.25"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.25.tgz#6ae2159b40138c792058a23c3c04fd3db49e929e"
   integrity sha512-Dlj2V72cfYLPNscIG3/SMUOzhzj7GK3bpSrfefwt2YT9GLynvLCCZjbhyF6VsT0q0+aRACRX03TDJGb7cA0cqg==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@~16.9.26":
+  version "16.9.26"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.26.tgz#1e55803e468f5393413e29033538cc9aaed6cec9"
+  integrity sha512-dGuSM+B0Pq1MKXYUMlUQWeS6Jj9IhSAUf9v8Ikaimj+YhkBcQrihWBkmyEhK/1fzkJTwZQkhZp5YhmWa2CH+Rw==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -2016,6 +2024,17 @@ babel-preset-expo@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/babel-preset-expo/-/babel-preset-expo-8.0.0.tgz#08c042363189f2d871381f0d0dbf9644e9f67aea"
   integrity sha512-40UCIE4E+9Xx5K+oEidFHML2+j/WE/ikcC7+3ndWx74MtdmRAtnGecboKRiGUK/vMrHzXIcWPP6/SOnE7zQVgQ==
+  dependencies:
+    "@babel/plugin-proposal-decorators" "^7.6.0"
+    "@babel/preset-env" "^7.6.3"
+    babel-plugin-module-resolver "^3.2.0"
+    babel-plugin-react-native-web "^0.11.7"
+    metro-react-native-babel-preset "^0.56.0"
+
+babel-preset-expo@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/babel-preset-expo/-/babel-preset-expo-8.1.0.tgz#7dfdebe6dad80edd1901e0f733ca6a6cce2ad605"
+  integrity sha512-ZlGIo8OlO0b7S//QrqHGIIf2BY9HId5efxgBxyic5ZbKo6NHICThjSpEz4rRyQRGka7HixBq/Jyjsn4M2D/n/g==
   dependencies:
     "@babel/plugin-proposal-decorators" "^7.6.0"
     "@babel/preset-env" "^7.6.3"
@@ -3582,10 +3601,10 @@ expo-asset@~8.0.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-camera@~8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-8.0.0.tgz#a0caee7baf1f2013203fe6a4635125ade12ec164"
-  integrity sha512-mtP4NV2R4e+JTXUZBiA0ok4xSzTfRLxirvqJ5T7kjyozuCWUJeOhGk3hqNsBbWhwXDA+hirAge7169UB3vKfDQ==
+expo-camera@~8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-8.2.0.tgz#9c849f0dc409e1fe6ee886f479e0ee0050b6d386"
+  integrity sha512-wGVqQVVR4YCkHuI7u+qloI1p2UbYwpU8hs0IEM+1Th4JQekAPUEfOmJI6ZHGj36El8f87ghRed2MXzOssn4hHg==
   dependencies:
     lodash "^4.6.0"
     prop-types "^15.6.0"
@@ -3603,6 +3622,11 @@ expo-constants@~8.0.0:
   integrity sha512-NGRwSWfhwNFA9WVLXwqnSDPJJ4DdXTqEkl9Fr9PcyW5VCoFgz7uke256E1YZsYhOE0Ph365lu/5jjZs+MRmRog==
   dependencies:
     ua-parser-js "^0.7.19"
+
+expo-constants@~9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.0.0.tgz#35c600079ee91d38fe4f56375caae6e90f122fdd"
+  integrity sha512-1kqZMM8Ez5JT3sTEx8I69fP6NYFLOJjeM6Z63dD/m2NiwvzSADiO5+BhghnWNGN1L3bxbgOjXS6EHtS7CdSfxA==
 
 expo-error-recovery@~1.0.0:
   version "1.0.0"
@@ -3627,6 +3651,11 @@ expo-keep-awake@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-8.0.0.tgz#f9200a876a5db86e3f0aec8843428a918cdc08d6"
   integrity sha512-l+672FVu9qqBEFKSXL1jrsQoDky7gTJX6WYLTWc0/hJuTMhVowWUHsOh/L9vxJEt23QtqLyszQ+hBqjQnWvICQ==
+
+expo-keep-awake@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-8.1.0.tgz#3a1d8aa5a8395d40c7d79e1c93020ae5f848e664"
+  integrity sha512-RNPwWvpwsJwJS8ZI1yklKyVQ6l2NNZBCN2aSgQMRza2SABnpFFzDLHQwMo7DC+nbmrOueMvCIDr0VI3xrzGfEg==
 
 expo-linear-gradient@~8.0.0:
   version "8.0.0"
@@ -3658,6 +3687,11 @@ expo-web-browser@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-8.0.0.tgz#8a4451c744c115569a4c810dac8851f219a21c72"
   integrity sha512-7/rXUajycSjEF4Zd4tWm8+zP9/zJg8UWj575w2AeGI7RbOwUjqzQd1CFRzQBJkHflrEaTOXJbFHXxjJXdJaL1g==
+
+expo-web-browser@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-8.1.0.tgz#1b4ca25e4dd600fac9ad16e32d81be47778c2667"
+  integrity sha512-Js2LIGut0NRKF+8BdQ2EOwGF2B2VYlnHgERxRtR+vHw7NOa7ZSl2GKFlAmf8QvAHqskk1OD0tujtoATv9XcELg==
 
 expo@~36.0.2:
   version "36.0.2"
@@ -3976,17 +4010,17 @@ find-up@^4.1.0:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
 
-firebase@^7.12.0:
-  version "7.12.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.12.0.tgz#aafaa51f0b081e356c2df670e39f8bd7c2f7d774"
-  integrity sha512-OXOOYE1RATpkBPEbiwW4qlz/raXkpAEqtxXeRKDIqJcSuzK2oyBVj5zrME1sqk77e0gjIlpbvpV0Vm36cFgpYg==
+firebase@^7.13.0:
+  version "7.13.0"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-7.13.0.tgz#8e1f29c2a029993a616360a0fb396d5b92a6c16e"
+  integrity sha512-XozrF4UJ4RJR0/d38SiCuCrE8E9P2kd7cQAP4ksEIXNgPexnA9P6+oJipa+tgBx9h9uwVexESsmXAv0ESt8OXA==
   dependencies:
-    "@firebase/analytics" "0.2.18"
+    "@firebase/analytics" "0.3.0"
     "@firebase/app" "0.6.0"
     "@firebase/app-types" "0.6.0"
     "@firebase/auth" "0.14.1"
     "@firebase/database" "0.5.24"
-    "@firebase/firestore" "1.12.2"
+    "@firebase/firestore" "1.13.0"
     "@firebase/functions" "0.4.38"
     "@firebase/installations" "0.4.6"
     "@firebase/messaging" "0.6.10"
@@ -4209,12 +4243,6 @@ grpc@1.24.2:
     nan "^2.13.2"
     node-pre-gyp "^0.14.0"
     protobufjs "^5.0.3"
-
-"hammerjs@https://github.com/naver/hammer.js.git":
-  version "2.0.17-snapshot"
-  resolved "https://github.com/naver/hammer.js.git#54bc698b25edd6e1b76ca975ebaced5ce0467d51"
-  dependencies:
-    "@types/hammerjs" "^2.0.36"
 
 har-schema@^2.0.0:
   version "2.0.0"
@@ -7137,13 +7165,12 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-native-gesture-handler@~1.5.0:
-  version "1.5.6"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.5.6.tgz#5d90145f624e3707db2930f43ab41579683e2375"
-  integrity sha512-z2jLUkRiRc0PBAC9UcXYkqy3VUzBG0cYQAGMsDHsd90JgrzudHAFRJV9fvFm18wNauFTNnJievjZ0C3rI2ydhw==
+react-native-gesture-handler@~1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
+  integrity sha512-gQgIKhDiYf754yzhhliagLuLupvGb6ZyBdzYzr7aus3Fyi87TLOw63ers+r4kGw0h26oAWTAdHd34JnF4NeL6Q==
   dependencies:
     "@egjs/hammerjs" "^2.0.17"
-    hammerjs "https://github.com/naver/hammer.js.git"
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
