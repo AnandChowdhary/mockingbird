@@ -253,12 +253,12 @@ export default function App() {
         <StatusBar barStyle="light-content" />
         <View style={styles.container}>
           {active === "live" ? (
-            <CameraPage cameraParams={cameraParams} />
+            <CameraPage mode="live" cameraParams={cameraParams} />
           ) : (
             <></>
           )}
           {active === "photo" ? (
-            <CameraPage cameraParams={cameraParams} />
+            <CameraPage mode="photo" cameraParams={cameraParams} />
           ) : (
             <></>
           )}
@@ -611,7 +611,11 @@ const styles = StyleSheet.create({
  * @param uri
  * @param progressCallback
  */
-export const uploadAsFile = async (endpoint: string, uri: string) => {
+export const uploadAsFile = async (
+  endpoint: string,
+  uri: string,
+  live: boolean
+) => {
   console.log("uploadAsFile", uri);
   const response = await fetch(uri);
   const blob = await response.blob();
@@ -623,13 +627,14 @@ export const uploadAsFile = async (endpoint: string, uri: string) => {
   const task = await ref.put(blob, metadata);
   const url: string = await task.ref.getDownloadURL();
   await database.ref(endpoint).update({ url });
-  setTimeout(() => {
-    storage
-      .ref(ref.name)
-      .delete()
-      .then(() => {})
-      .catch(() => {});
-  }, 60000);
+  if (live)
+    setTimeout(() => {
+      storage
+        .ref(ref.name)
+        .delete()
+        .then(() => {})
+        .catch(() => {});
+    }, 10000);
 };
 
 const SettingsPageHome = ({
@@ -1295,21 +1300,36 @@ const SettingsPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
     );
 };
 
-const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
+const CameraPage = ({
+  cameraParams,
+  mode
+}: {
+  cameraParams: CameraParams;
+  mode: string;
+}) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState<Camera>(null);
+  let interval: any;
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
+    interval = setInterval(() => {
+      click(true)
+        .then(() => {})
+        .catch(() => {});
+    }, 2500);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, []);
-  const click = async () => {
+  const click = async (live = false) => {
     if (!camera) return;
     const image = await camera.takePictureAsync({
       quality: cameraParams.quality
     });
-    await uploadAsFile(cameraParams.endpoint, image.uri);
+    await uploadAsFile(cameraParams.endpoint, image.uri, live);
   };
 
   if (hasPermission === null) {
@@ -1363,18 +1383,25 @@ const CameraPage = ({ cameraParams }: { cameraParams: CameraParams }) => {
                 )}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cameraBtn} onPress={click}>
-              <View style={styles.cameraBtnInner}>
-                <MaterialIcons
-                  name="camera"
-                  size={32}
-                  color={cameraParams.theme.dark}
-                />
-                <Text style={styles.cameraBtnText}>
-                  {cameraParams.i18n.photo.click}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {mode === "photo" ? (
+              <TouchableOpacity
+                style={styles.cameraBtn}
+                onPress={() => click()}
+              >
+                <View style={styles.cameraBtnInner}>
+                  <MaterialIcons
+                    name="camera"
+                    size={32}
+                    color={cameraParams.theme.dark}
+                  />
+                  <Text style={styles.cameraBtnText}>
+                    {cameraParams.i18n.photo.click}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </Camera>
