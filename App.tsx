@@ -704,7 +704,7 @@ const SettingsPageHome = ({
           {
             icon: "info-with-circle",
             type: "entypo",
-            label: cameraParams.i18n.settings.about.title,
+            label: "v1.7.0",
             url:
               "https://github.com/AnandChowdhary/mockingbird/blob/master/README.md"
           }
