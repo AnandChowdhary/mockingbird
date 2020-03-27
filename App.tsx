@@ -512,7 +512,8 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 36,
     fontWeight: "bold",
-    color: "#fff"
+    color: "#fff",
+    flex: 1
   },
   viewBackground: {
     position: "absolute",
