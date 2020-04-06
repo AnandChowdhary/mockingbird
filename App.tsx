@@ -183,6 +183,7 @@ export default function App() {
     AsyncStorage.getItem("settings")
       .then((result: any) => {
         if (result) {
+          result = JSON.parse(result);
           if (result.flashMode) setFlashMode(result.flashMode);
           if (result.autofocus) setAutofocus(result.autofocus);
           if (result.zoom) setZoom(result.zoom);
@@ -198,8 +199,7 @@ export default function App() {
           if (result.quality) setQuality(result.quality);
         }
       })
-      .catch(() => {})
-      .then(() => (initialized = true));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -230,8 +230,7 @@ export default function App() {
           theme
         })
       )
-        .then(() => {})
-        .catch(() => {});
+    initialized = true;
   }, [
     flashMode,
     autofocus,
@@ -617,7 +616,6 @@ export const uploadAsFile = async (
   uri: string,
   live: boolean
 ) => {
-  console.log("uploadAsFile", uri);
   const response = await fetch(uri);
   const blob = await response.blob();
   var metadata = {
@@ -1316,17 +1314,18 @@ const CameraPage = ({
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-    interval = setInterval(() => {
-      click(true)
-        .then(() => {})
-        .catch(() => {});
-    }, 2500);
+    if (mode === "live")
+      interval = setInterval(() => {
+        click(true)
+          .then(() => {})
+          .catch(() => {});
+      }, 2500);
     return () => {
       if (interval) clearInterval(interval);
+      setCamera(null);
     };
   }, []);
   const click = async (live = false) => {
-    if (!camera) return;
     const image = await camera.takePictureAsync({
       quality: cameraParams.quality
     });
