@@ -113,3 +113,21 @@ const updateHistory = () => {
     })
     .catch(() => {});
 };
+
+const rotateBtn = document.querySelector<HTMLButtonElement>(".rotate");
+let deg = 0;
+if (rotateBtn)
+  rotateBtn.addEventListener("click", () => {
+    const img = document.querySelector<HTMLImageElement>(".image img");
+    if (img) {
+      deg += 90;
+      if (deg % 180 === 0) {
+        img.style.maxWidth = "100vw";
+        img.style.maxHeight = "100vh";
+      } else {
+        img.style.maxWidth = "100vh";
+        img.style.maxHeight = "100vw";
+      }
+      img.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+    }
+  });
