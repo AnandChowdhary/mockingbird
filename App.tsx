@@ -229,7 +229,7 @@ export default function App() {
           i18n,
           theme
         })
-      )
+      );
     initialized = true;
   }, [
     flashMode,
@@ -603,7 +603,14 @@ const styles = StyleSheet.create({
   },
   buttonTextSelected: {
     color: "#fff"
-  }
+  },
+  cameraSlider: {
+    position: "absolute",
+    left: "10%",
+    top: "5%",
+    right: "10%"
+  },
+  cameraSliderLeft: {}
 });
 
 /**
@@ -1308,28 +1315,27 @@ const CameraPage = ({
 }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState<Camera>(null);
-  let interval: any;
+  const [liveStarted, setLiveStarted] = useState(false);
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-    if (mode === "live")
-      interval = setInterval(() => {
-        click(true)
-          .then(() => {})
-          .catch(() => {});
-      }, 2500);
     return () => {
-      if (interval) clearInterval(interval);
       setCamera(null);
     };
   }, []);
   const click = async (live = false) => {
+    console.log("Clicking photo");
+    if (live) setLiveStarted(true);
     const image = await camera.takePictureAsync({
       quality: cameraParams.quality
     });
     await uploadAsFile(cameraParams.endpoint, image.uri, live);
+    if (live)
+      click(true)
+        .then(() => {})
+        .catch(() => {});
   };
 
   if (hasPermission === null) {
@@ -1351,6 +1357,14 @@ const CameraPage = ({
         focusDepth={cameraParams.focusDepth}
       >
         <View style={styles.cameraItems}>
+          <Slider
+            style={{ ...styles.cameraSlider, ...styles.cameraSliderLeft }}
+            onValueChange={value => cameraParams.setZoom(value)}
+            value={cameraParams.zoom}
+            step={0.1}
+            minimumValue={0}
+            maximumValue={1}
+          />
           <View style={styles.cameraNav}>
             <TouchableOpacity
               style={{ ...styles.cameraBtn, ...styles.cameraBtnSquare }}
@@ -1397,6 +1411,23 @@ const CameraPage = ({
                   <Text style={styles.cameraBtnText}>
                     {cameraParams.i18n.photo.click}
                   </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <></>
+            )}
+            {mode === "live" && !liveStarted ? (
+              <TouchableOpacity
+                style={styles.cameraBtn}
+                onPress={() => click(true)}
+              >
+                <View style={styles.cameraBtnInner}>
+                  <MaterialIcons
+                    name="camera"
+                    size={32}
+                    color={cameraParams.theme.dark}
+                  />
+                  <Text style={styles.cameraBtnText}>Start live</Text>
                 </View>
               </TouchableOpacity>
             ) : (
