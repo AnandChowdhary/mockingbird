@@ -1,6 +1,7 @@
 body {
   background-color: darkslategray;
   color: #fff;
+  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -27,16 +28,13 @@ body {
   right: auto;
 }
 
-.image {
+.image img {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+  max-width: 100vw;
+  max-height: 100vh;
 }
 
 .history-view {

@@ -36,8 +36,8 @@ db.ref(slug).on("value", snapshot => {
   if (!value) return;
   loader.src = value.url;
   loader.addEventListener("load", () => {
-    const img = document.querySelector<HTMLDivElement>(".image");
-    if (img) img.style.backgroundImage = `url(${value.url})`;
+    const img = document.querySelector<HTMLImageElement>(".image img");
+    if (img) img.setAttribute("src", value.url);
     track({
       action: "update-image",
       event: value.url
